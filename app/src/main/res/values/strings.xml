@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">AlcaAsset</string>
+    <string name="app_name">Asset</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
 </resources>
