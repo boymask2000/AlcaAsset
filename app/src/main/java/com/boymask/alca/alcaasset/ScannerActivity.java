@@ -1,9 +1,9 @@
 package com.boymask.alca.alcaasset;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +15,7 @@ import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.zxing.Result;
 
-public class ScannerActivity extends AppCompatActivity {
+public class ScannerActivity extends Activity {
 
     private CodeScanner mCodeScanner;
 
@@ -24,10 +24,10 @@ public class ScannerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-
-
-
         setContentView(R.layout.activity_scanner);
+
+        final EditText textCodice = findViewById(R.id.codiceAsset);
+
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
@@ -37,7 +37,8 @@ public class ScannerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         String value = result.getText();
-                        value = "85620";
+                    //    value = "85620";
+                        textCodice.setText(value);
                         startNext(value);
                     }
                 });
@@ -50,7 +51,7 @@ public class ScannerActivity extends AppCompatActivity {
             }
         });
 
-        final EditText textCodice = findViewById(R.id.codiceAsset);
+
 
         Button ok = (Button) findViewById(R.id.button);
         ok.setOnClickListener(new View.OnClickListener() {

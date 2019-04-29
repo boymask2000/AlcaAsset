@@ -5,34 +5,13 @@ import java.io.Serializable;
 
 public class Asset implements Serializable {
     private long id;
-    private int family;
-    private String assetNum;
-    private String changedDate;
-    private String description;
-    private String longDescription;
-    private String masterSystem;
-    private String system;
-    private String subSystem;
-    private String location;
-    private String siteId;
-    private String workCenter;
-    private String assetType;
-    private String assetQuantity;
-    private String unitOfMeasure;
-    private String inventoryCategory;
-    private String purchasePrice;
-    private String budgetedCost;
-    private String replacementCost;
-    private String meterGroup;
-    private String belongsTo;
-    private String contractNumber;
-    private String taskDelivOrderNum;
-    private String drawingRefId;
-    private String warrantyExpDate;
-    private String statusDate;
-    private String installationDate;
 
-    private int lastStatus;
+    private String facNum;
+    private String facSystem;
+    private String facSubsystem;
+    private String assemblyCategory;
+    private String nomenclature;
+    private String procId;
 
     public long getId() {
         return id;
@@ -42,234 +21,108 @@ public class Asset implements Serializable {
         this.id = id;
     }
 
-    public int getFamily() {
-        return family;
+    public String getFacNum() {
+        return facNum;
     }
 
-    public void setFamily(int family) {
-        this.family = family;
+    public void setFacNum(String facNum) {
+        this.facNum = facNum;
     }
 
-    public String getDescription() {
-        return description;
+    public String getFacSystem() {
+        return facSystem;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setFacSystem(String facSystem) {
+        this.facSystem = facSystem;
     }
 
-    public String getMasterSystem() {
-        return masterSystem;
+    public String getFacSubsystem() {
+        return facSubsystem;
     }
 
-    public void setMasterSystem(String masterSystem) {
-        this.masterSystem = masterSystem;
+    public void setFacSubsystem(String facSubsystem) {
+        this.facSubsystem = facSubsystem;
     }
 
-    public String getSystem() {
-        return system;
+    public String getAssemblyCategory() {
+        return assemblyCategory;
     }
 
-    public void setSystem(String system) {
-        this.system = system;
+    public void setAssemblyCategory(String assemblyCategory) {
+        this.assemblyCategory = assemblyCategory;
     }
 
-    public String getSubSystem() {
-        return subSystem;
+    public String getNomenclature() {
+        return nomenclature;
     }
 
-    public void setSubSystem(String subSystem) {
-        this.subSystem = subSystem;
+    public void setNomenclature(String nomenclature) {
+        this.nomenclature = nomenclature;
     }
 
-    public String getLocation() {
-        return location;
+    public String getProcId() {
+        return procId;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setProcId(String procId) {
+        this.procId = procId;
     }
 
-    public String getSiteId() {
-        return siteId;
+    public String getPmSchedRecipient() {
+        return pmSchedRecipient;
     }
 
-    public void setSiteId(String siteId) {
-        this.siteId = siteId;
+    public void setPmSchedRecipient(String pmSchedRecipient) {
+        this.pmSchedRecipient = pmSchedRecipient;
     }
 
-    public String getWorkCenter() {
-        return workCenter;
+    public String getPmSchedSerial() {
+        return pmSchedSerial;
     }
 
-    public void setWorkCenter(String workCenter) {
-        this.workCenter = workCenter;
+    public void setPmSchedSerial(String pmSchedSerial) {
+        this.pmSchedSerial = pmSchedSerial;
     }
 
-    public String getAssetType() {
-        return assetType;
+    public String getRpieIdIndividual() {
+        return rpieIdIndividual;
     }
 
-    public void setAssetType(String assetType) {
-        this.assetType = assetType;
+    public void setRpieIdIndividual(String rpieIdIndividual) {
+        this.rpieIdIndividual = rpieIdIndividual;
     }
 
-    public String getInventoryCategory() {
-        return inventoryCategory;
+    public String getFrequency() {
+        return frequency;
     }
 
-    public void setInventoryCategory(String inventoryCategory) {
-        this.inventoryCategory = inventoryCategory;
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
     }
 
-    public String getReplacementCost() {
-        return replacementCost;
+    public String getSchedAssignedOrg() {
+        return schedAssignedOrg;
     }
 
-    public void setReplacementCost(String replacementCost) {
-        this.replacementCost = replacementCost;
+    public void setSchedAssignedOrg(String schedAssignedOrg) {
+        this.schedAssignedOrg = schedAssignedOrg;
     }
 
-    public String getInstallationDate() {
-        return installationDate;
-    }
-
-    public void setInstallationDate(String installationDate) {
-        this.installationDate = installationDate;
-    }
-
-    public String getAssetNum() {
-        return assetNum;
-    }
-
-    public void setAssetNum(String assetNum) {
-        this.assetNum = assetNum;
-    }
-
-    public String getChangedDate() {
-        return changedDate;
-    }
-
-    public void setChangedDate(String changedDate) {
-        this.changedDate = changedDate;
-    }
-
-    public String getLongDescription() {
-        return longDescription;
-    }
-
-    public void setLongDescription(String longDescription) {
-        this.longDescription = longDescription;
-    }
-
-    public String getAssetQuantity() {
-        return assetQuantity;
-    }
-
-    public void setAssetQuantity(String assetQuantity) {
-        this.assetQuantity = assetQuantity;
-    }
-
-    public String getUnitOfMeasure() {
-        return unitOfMeasure;
-    }
-
-    public void setUnitOfMeasure(String unitOfMeasure) {
-        this.unitOfMeasure = unitOfMeasure;
-    }
-
-    public String getPurchasePrice() {
-        return purchasePrice;
-    }
-
-    public void setPurchasePrice(String purchasePrice) {
-        this.purchasePrice = purchasePrice;
-    }
-
-    public String getBudgetedCost() {
-        return budgetedCost;
-    }
-
-    public void setBudgetedCost(String budgetedCost) {
-        this.budgetedCost = budgetedCost;
-    }
-
-    public String getMeterGroup() {
-        return meterGroup;
-    }
-
-    public void setMeterGroup(String meterGroup) {
-        this.meterGroup = meterGroup;
-    }
-
-    public String getBelongsTo() {
-        return belongsTo;
-    }
-
-    public void setBelongsTo(String belongsTo) {
-        this.belongsTo = belongsTo;
-    }
-
-    public String getContractNumber() {
-        return contractNumber;
-    }
-
-    public void setContractNumber(String contractNumber) {
-        this.contractNumber = contractNumber;
-    }
-
-    public String getTaskDelivOrderNum() {
-        return taskDelivOrderNum;
-    }
-
-    public void setTaskDelivOrderNum(String taskDelivOrderNum) {
-        this.taskDelivOrderNum = taskDelivOrderNum;
-    }
-
-    public String getDrawingRefId() {
-        return drawingRefId;
-    }
-
-    public void setDrawingRefId(String drawingRefId) {
-        this.drawingRefId = drawingRefId;
-    }
-
-    public String getWarrantyExpDate() {
-        return warrantyExpDate;
-    }
-
-    public void setWarrantyExpDate(String warrantyExpDate) {
-        this.warrantyExpDate = warrantyExpDate;
-    }
-
-    public String getStatusDate() {
-        return statusDate;
-    }
-
-    public void setStatusDate(String statusDate) {
-        this.statusDate = statusDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Asset [id=" + id + ", family=" + family + ", assetNum=" + assetNum + ", changedDate=" + changedDate
-                + ", description=" + description + ", longDescription=" + longDescription + ", masterSystem="
-                + masterSystem + ", system=" + system + ", subSystem=" + subSystem + ", location=" + location
-                + ", siteId=" + siteId + ", workCenter=" + workCenter + ", assetType=" + assetType + ", assetQuantity="
-                + assetQuantity + ", unitOfMeasure=" + unitOfMeasure + ", inventoryCategory=" + inventoryCategory
-                + ", purchasePrice=" + purchasePrice + ", budgetedCost=" + budgetedCost + ", replacementCost="
-                + replacementCost + ", meterGroup=" + meterGroup + ", belongsTo=" + belongsTo + ", contractNumber="
-                + contractNumber + ", taskDelivOrderNum=" + taskDelivOrderNum + ", drawingRefId=" + drawingRefId
-                + ", warrantyExpDate=" + warrantyExpDate + ", statusDate=" + statusDate + ", installationDate="
-                + installationDate + "]";
-    }
-
-    public int getLastStatus() {
+    public String getLastStatus() {
         return lastStatus;
     }
 
-    public void setLastStatus(int lastStatus) {
+    public void setLastStatus(String lastStatus) {
         this.lastStatus = lastStatus;
     }
+
+    private String pmSchedRecipient;
+    private String pmSchedSerial;
+    private String rpieIdIndividual;
+    private String frequency;
+    private String schedAssignedOrg;
+    private String lastStatus="0";
+
 
 }

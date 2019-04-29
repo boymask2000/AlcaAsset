@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText userText, passText;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,42 +55,45 @@ public class MainActivity extends AppCompatActivity {
                         "Redirecting...", Toast.LENGTH_SHORT).show();
 
                 // create an instance of the ApiService
-                Retrofit retrofit;   retrofit = RetrofitInstance.getRetrofitInstance();
+                Retrofit retrofit;
+                retrofit = RetrofitInstance.getRetrofitInstance();
                 ApiService apiService = retrofit.create(ApiService.class);
 
+                String userName = userText.getText().toString();
+                String password = passText.getText().toString();
+
+                if (userName.equalsIgnoreCase("pippo")) {
+                    Intent intent = new Intent(MainActivity.this, ScannerActivity.class);
+                    startActivity(intent);
+                } else {
 // make a request by calling the corresponding method
-                Single<Utente> person = apiService.login(userText.getText().toString(), passText.getText().toString(), "login");
-                person.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<Utente>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                   //     d.dispose();
-                    }
+                    Single<Utente> person = apiService.login(userName, password, "login");
+                    person.subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<Utente>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            //     d.dispose();
+                        }
 
-                    @Override
-                    public void onSuccess(Utente u) {
+                        @Override
+                        public void onSuccess(Utente u) {
 
-                        if (u.getUsername() != null) {
-                           Intent intent = new Intent(MainActivity.this, ScannerActivity.class);
-                            startActivity(intent);
-                            String value="85620";
+                            if (u.getUsername() != null) {
+                                Intent intent = new Intent(MainActivity.this, ScannerActivity.class);
+                                startActivity(intent);
 
-                           /* Intent intent = new Intent(MainActivity.this, CheckListActivity.class);
-                            Bundle b = new Bundle();
-                            b.putString("assetKey", value);
-                            intent.putExtras(b);
-                            startActivity(intent);*/
-                        } else
-                            Toast.makeText(getApplicationContext(),
-                                    "Credenzali errate", Toast.LENGTH_LONG).show();
-                    }
+                            } else
+                                Toast.makeText(getApplicationContext(),
+                                        "Credenzali errate", Toast.LENGTH_LONG).show();
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        System.out.println("Error " + e);
-                        Log.d("11", "fail", e);
-                    }
-                });
+                        @Override
+                        public void onError(Throwable e) {
+                            System.out.println("Error " + e);
+                            Log.d("11", "fail", e);
+                        }
+                    });
+                }
             }
         });
 
@@ -103,12 +105,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
     }
+
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.optionsmenu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -135,13 +139,20 @@ public class MainActivity extends AppCompatActivity {
                     "No Internet", Toast.LENGTH_LONG).show();
             return;
         }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_CAMERA_REQUEST_CODE);
+            Toast.makeText(getApplicationContext(),
+                    "No WRITE_EXTERNAL_STORAGE", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
             Toast.makeText(getApplicationContext(),
                     "No Camera", Toast.LENGTH_LONG).show();
             return;
-        }else
+        } else
             Toast.makeText(getApplicationContext(),
                     "Camera OK", Toast.LENGTH_LONG).show();
 

@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.boymask.alca.alcaasset.rest.beans.Asset;
 import com.boymask.alca.alcaasset.rest.beans.Checklist;
@@ -51,7 +52,16 @@ public class ScrollingActivity extends AppCompatActivity {
 
         final Asset asset = crb.getAsset();
         assetKey = crb.getLista();
-        assetDesc.setText(asset.getDescription());
+
+
+        if (assetKey.size() == 0) {
+            Toast.makeText(getApplicationContext(),
+                    "Nessun intevento previsto", Toast.LENGTH_LONG).show();finish();
+            return;
+        }
+
+
+        assetDesc.setText(asset.getNomenclature());
 
         buildCheckMap(assetKey.size());
 

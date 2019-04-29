@@ -1,12 +1,14 @@
 package com.boymask.alca.alcaasset;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.boymask.alca.alcaasset.common.TimeUtil;
 import com.boymask.alca.alcaasset.rest.ApiService;
@@ -29,15 +31,13 @@ import retrofit2.Retrofit;
 public class InterventoActivity extends Activity {
 
     private Asset asset;
-    private int i;
-  //  private int scelta = 0;
     private Button buttonScelta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intervento);
-       buttonScelta = (Button) findViewById(R.id.buttonScelta);
+        buttonScelta = (Button) findViewById(R.id.buttonScelta);
 
         Bundle b = getIntent().getExtras();
 
@@ -64,6 +64,12 @@ public class InterventoActivity extends Activity {
 
             @Override
             public void onSuccess(List<InterventoRestBean> lista) {
+                if (lista.size() == 0) {
+                    Toast.makeText(getApplicationContext(),
+                            "Nessun intevento previsto", Toast.LENGTH_LONG).show();finish();
+                    return;
+                }
+
                 InterventoRestBean intervento = lista.get(0);
 
                 showInfo(intervento);
@@ -80,31 +86,23 @@ public class InterventoActivity extends Activity {
     private void showInfo(final InterventoRestBean inter) {
         TextView dataPianificata = (TextView) findViewById(R.id.dataPianificata);
         dataPianificata.setText(TimeUtil.getFormattedDate(inter.getData_pianificata()));
-  /*      int buttons[] = {R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9};
-       int esitos[]={1,2,3,4,5,6,7,8,9};
-       */
-
+ 
         Button b1 = (Button) findViewById(R.id.button1);
         ColorDrawable buttonColor = (ColorDrawable) b1.getBackground();
         buttonScelta.setBackground(buttonColor);
         inter.setEsito(1);
 
         setButtons(inter);
-        //  final Scelta scelta = new Scelta();
- /*       for (i = 0; i < 9; i++) {
-            final Button b = (Button) findViewById(buttons[i]);
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ColorDrawable buttonColor = (ColorDrawable) b.getBackground();
-                    buttonScelta.setBackground(buttonColor);
+        
+        Button nuovoIntervento =  (Button) findViewById(R.id.nuovoIntervento);
+        nuovoIntervento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nuovoIntervento(inter);
+            }
+        });
 
-                 //   scelta = i + 1;
-                    inter.setEsito(i+1);
-                }
-            });
-        }*/
-
+        Button foto = (Button) findViewById(R.id.photo);
         Button esci = (Button) findViewById(R.id.esci);
         esci.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +110,7 @@ public class InterventoActivity extends Activity {
                 finish();
             }
         });
+        setFoto(foto,inter);
 
         Button ok = (Button) findViewById(R.id.ok);
         ok.setOnClickListener(new View.OnClickListener() {
@@ -120,10 +119,10 @@ public class InterventoActivity extends Activity {
                 Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
                 ApiService apiService = retrofit.create(ApiService.class);
 
-                apiService.updateIntervento( inter ).enqueue(new Callback<InterventoRestBean>() {
+                apiService.updateIntervento(inter).enqueue(new Callback<InterventoRestBean>() {
                     @Override
                     public void onResponse(Call<InterventoRestBean> call, Response<InterventoRestBean> response) {
-Log.d("hh", "onresponse");
+                        Log.d("hh", "onresponse");
                         finish();
                     }
 
@@ -136,7 +135,30 @@ Log.d("hh", "onresponse");
             }
         });
     }
-    private void setButtons(final InterventoRestBean inter){
+
+    private void setFoto(Button b, final InterventoRestBean inter) {
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InterventoActivity.this, CameraActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("InterventoRestBean", inter);
+                intent.putExtras(b);
+                startActivity(intent);
+
+            }
+        });
+    }
+
+    private void nuovoIntervento(InterventoRestBean inter) {
+        Intent intent = new Intent(InterventoActivity.this, RichiestaNuovoInterventoActivity.class);
+        Bundle b = new Bundle();
+        b.putSerializable("interventoRestBean", inter);
+        intent.putExtras(b);
+        startActivity(intent);
+    }
+
+    private void setButtons(final InterventoRestBean inter) {
         final Button b1 = (Button) findViewById(R.id.button1);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override

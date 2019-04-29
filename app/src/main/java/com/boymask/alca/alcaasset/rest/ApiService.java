@@ -6,11 +6,14 @@ import com.boymask.alca.alcaasset.rest.beans.Utente;
 
 import java.util.List;
 import io.reactivex.Single;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -29,4 +32,11 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("intervento/updateIntervento")
     Call<InterventoRestBean> updateIntervento(@Body InterventoRestBean bean);
+
+    @POST("intervento/creaIntervento")
+    Call<InterventoRestBean> creaIntervento(@Body InterventoRestBean bean);
+
+    @Multipart
+    @POST("upload/uploadAttachment")
+    Call<Utente> uploadFile(@Part MultipartBody.Part filePart,@Query("id") long id);
 }
