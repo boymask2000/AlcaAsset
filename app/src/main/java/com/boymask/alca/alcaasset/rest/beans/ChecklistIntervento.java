@@ -7,6 +7,24 @@ public class ChecklistIntervento implements Serializable {
     private long id;
     private long interventoId;
     private long checkId;
+    private String description;
+    private String descriptionUS;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescriptionUS() {
+        return descriptionUS;
+    }
+
+    public void setDescriptionUS(String descriptionUS) {
+        this.descriptionUS = descriptionUS;
+    }
 
     public long getId() {
         return id;

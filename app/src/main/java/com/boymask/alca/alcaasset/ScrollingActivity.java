@@ -169,7 +169,7 @@ public class ScrollingActivity extends AppCompatActivity {
             View rowView = inflater.inflate(R.layout.row_layout, null, true);
             TextView txtTitle = (TextView) rowView.findViewById(R.id.txt);
 
-            txtTitle.setText(""+lista.get(position).getId());
+            txtTitle.setText(""+lista.get(position).getDescription());
 
             return rowView;
         }
