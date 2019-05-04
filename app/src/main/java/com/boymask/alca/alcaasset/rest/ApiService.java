@@ -1,5 +1,8 @@
 package com.boymask.alca.alcaasset.rest;
 
+import com.boymask.alca.alcaasset.rest.beans.Check;
+import com.boymask.alca.alcaasset.rest.beans.Checklist;
+import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
 import com.boymask.alca.alcaasset.rest.beans.Utente;
@@ -25,9 +28,14 @@ public interface ApiService {
     @GET("checklist/{assetId}")
     Single<ChecklistRestBean> getChecklist(@Path("assetId") String assetId, @Query("checklist") String apiKey);
 
-    @GET("intervento/{assetId}")
-    Single<List<InterventoRestBean>> getInterventi(@Path("assetId") long assetId, @Query("interventi") String apiKey);
+    @GET("intervento/{interventoId}")
+    Single<InterventoRestBean> getIntervento(@Path("interventoId") long interventoId, @Query("interventi") String apiKey);
 
+    @GET("checklist/checksForIntervento/{interventoId}")
+    Single<List<ChecklistIntervento>> getChecksForIntervento(@Path("interventoId") long interventoId, @Query("interventi") String apiKey);
+
+    @GET("intervento/getnext/{rfid}")
+    Single<InterventoRestBean> getNextIntervento(@Path("rfid") String rfid, @Query("interventi") String apiKey);
 
     @Headers("Content-Type: application/json")
     @POST("intervento/updateIntervento")
@@ -39,4 +47,8 @@ public interface ApiService {
     @Multipart
     @POST("upload/uploadAttachment")
     Call<Utente> uploadFile(@Part MultipartBody.Part filePart,@Query("id") long id);
+
+    @Multipart
+    @POST("upload/uploadAudio")
+    Call<Utente> uploadAudio(@Part MultipartBody.Part filePart,@Query("id") long id);
 }

@@ -40,11 +40,11 @@ public class InterventoActivity extends Activity {
         buttonScelta = (Button) findViewById(R.id.buttonScelta);
 
         Bundle b = getIntent().getExtras();
-
+        long interventoId=0;
         if (b != null)
-            asset = (Asset) b.getSerializable("posbeu.alca.asset");
+            interventoId =  b.getLong("alca.asset.interventoId");
 
-        getInterventi(asset.getId());
+        getInterventi(interventoId);
     }
 
     private void getInterventi(long id) {
@@ -53,27 +53,29 @@ public class InterventoActivity extends Activity {
         ApiService apiService = retrofit.create(ApiService.class);
 
 
-        Single<List<InterventoRestBean>> person = apiService.getInterventi(id, "interventi");
+        Single<InterventoRestBean> person = apiService.getIntervento(id, "interventi");
 
         person.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<List<InterventoRestBean>>() {
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<InterventoRestBean>() {
             @Override
             public void onSubscribe(Disposable d) {
                 // we'll come back to this in a moment
             }
 
             @Override
-            public void onSuccess(List<InterventoRestBean> lista) {
-                if (lista.size() == 0) {
+            public void onSuccess(InterventoRestBean interventoRestBean) {
+                if (interventoRestBean == null) {
                     Toast.makeText(getApplicationContext(),
                             "Nessun intevento previsto", Toast.LENGTH_LONG).show();finish();
                     return;
                 }
 
-                InterventoRestBean intervento = lista.get(0);
+              //  InterventoRestBean intervento = lista.get(0);
 
-                showInfo(intervento);
+                showInfo(interventoRestBean);
             }
+
+
 
             @Override
             public void onError(Throwable e) {
@@ -84,6 +86,7 @@ public class InterventoActivity extends Activity {
     }
 
     private void showInfo(final InterventoRestBean inter) {
+        inter.setUser(MainActivity.getUserName());
         TextView dataPianificata = (TextView) findViewById(R.id.dataPianificata);
         dataPianificata.setText(TimeUtil.getFormattedDate(inter.getData_pianificata()));
  
@@ -101,7 +104,7 @@ public class InterventoActivity extends Activity {
                 nuovoIntervento(inter);
             }
         });
-
+      //  Button audio = (Button) findViewById(R.id.audio);
         Button foto = (Button) findViewById(R.id.photo);
         Button esci = (Button) findViewById(R.id.esci);
         esci.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +114,7 @@ public class InterventoActivity extends Activity {
             }
         });
         setFoto(foto,inter);
+    //    setAudio(audio,inter);
 
         Button ok = (Button) findViewById(R.id.ok);
         ok.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +144,21 @@ public class InterventoActivity extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(InterventoActivity.this, CameraActivity.class);
+               // Intent intent = new Intent(InterventoActivity.this, CameraActivity.class);
+                Intent intent = new Intent(InterventoActivity.this, AndroidCameraApiActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("InterventoRestBean", inter);
+                intent.putExtras(b);
+                startActivity(intent);
+
+            }
+        });
+    }
+    private void setAudio(Button b, final InterventoRestBean inter) {
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InterventoActivity.this, AudioRecordActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("InterventoRestBean", inter);
                 intent.putExtras(b);

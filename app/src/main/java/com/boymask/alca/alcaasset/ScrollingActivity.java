@@ -17,9 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.boymask.alca.alcaasset.rest.beans.Asset;
-import com.boymask.alca.alcaasset.rest.beans.Checklist;
+import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
+import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,39 +34,46 @@ public class ScrollingActivity extends AppCompatActivity {
 
     private Map<Integer, Boolean> checkMap = new HashMap<>();
     private Button ok;
+    ListView listview;
+    TextView assetDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
 
-        final ListView listview = (ListView) findViewById(R.id.list);
-        TextView assetDesc = (TextView) findViewById(R.id.assetDesc);
+        listview = (ListView) findViewById(R.id.list);
+        assetDesc = (TextView) findViewById(R.id.assetDesc);
         ok = (Button) findViewById(R.id.button);
 
         Bundle b = getIntent().getExtras();
-        List<Checklist> assetKey = null;
-        ChecklistRestBean crb = null;
-        if (b != null)
-            crb = (ChecklistRestBean) b.getSerializable("ChecklistRestBean");
+        List<ChecklistIntervento> lista = null;
+        InterventoRestBean irb = null;
+        ChecklistRestBean crb = (ChecklistRestBean) b.getSerializable("ChecklistRestBean");
 
-        final Asset asset = crb.getAsset();
-        assetKey = crb.getLista();
+        next(crb.getLista(),crb.getInterventoId());
 
 
-        if (assetKey.size() == 0) {
+
+    }
+
+    private void next(List<ChecklistIntervento> checks, final long id) {
+
+
+        if (checks.size() == 0) {
             Toast.makeText(getApplicationContext(),
-                    "Nessun intevento previsto", Toast.LENGTH_LONG).show();finish();
+                    "Nessun intevento previsto", Toast.LENGTH_LONG).show();
+            finish();
             return;
         }
 
 
-        assetDesc.setText(asset.getNomenclature());
+        //    assetDesc.setText(asset.getNomenclature());
 
-        buildCheckMap(assetKey.size());
+        buildCheckMap(checks.size());
 
         final CustomList adapter = new CustomList(this,
-                assetKey);
+                checks);
 
         //  final ListViewItemCheckboxBaseAdapter listViewDataAdapter = new ListViewItemCheckboxBaseAdapter(getApplicationContext(), initItemList);
 
@@ -106,13 +113,14 @@ public class ScrollingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ScrollingActivity.this, InterventoActivity.class);
                 Bundle b = new Bundle();
-                b.putSerializable("posbeu.alca.asset", asset);
+                b.putSerializable("alca.asset.interventoId", id);
                 intent.putExtras(b);
-                startActivityForResult(intent,1);
+                startActivityForResult(intent, 1);
             }
         });
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -142,16 +150,16 @@ public class ScrollingActivity extends AppCompatActivity {
             checkMap.put(i, false);
     }
 
-    public class CustomList extends ArrayAdapter<Checklist> {
+    public class CustomList extends ArrayAdapter<ChecklistIntervento> {
         private final Activity context;
 
-        private final List<Checklist> assetKey;
+        private final List<ChecklistIntervento> lista;
 
         public CustomList(Activity context,
-                          List<Checklist> assetKey) {
-            super(context, R.layout.row_layout, assetKey);
+                          List<ChecklistIntervento> lista) {
+            super(context, R.layout.row_layout, lista);
             this.context = context;
-            this.assetKey = assetKey;
+            this.lista = lista;
 
         }
 
@@ -161,17 +169,11 @@ public class ScrollingActivity extends AppCompatActivity {
             View rowView = inflater.inflate(R.layout.row_layout, null, true);
             TextView txtTitle = (TextView) rowView.findViewById(R.id.txt);
 
-            txtTitle.setText(assetKey.get(position).getDescription());
+            txtTitle.setText(""+lista.get(position).getId());
 
             return rowView;
         }
 
 
     }
-
- /*   public void onCheckboxClicked(View view) {
-        boolean checked = ((CheckBox) view).isChecked();
-
-        Log.d("dd", "" + checked);
-    }*/
 }

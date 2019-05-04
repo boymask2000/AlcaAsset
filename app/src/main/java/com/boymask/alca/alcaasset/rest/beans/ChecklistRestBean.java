@@ -9,17 +9,27 @@ public class ChecklistRestBean implements Serializable {
      */
     private static final long serialVersionUID = 1L;
     private Asset asset;
-    private List<Checklist> lista;
+
+    public long getInterventoId() {
+        return interventoId;
+    }
+
+    public void setInterventoId(long interventoId) {
+        this.interventoId = interventoId;
+    }
+
+    private long interventoId;
+    private List<ChecklistIntervento> lista;
     public Asset getAsset() {
         return asset;
     }
     public void setAsset(Asset asset) {
         this.asset = asset;
     }
-    public List<Checklist> getLista() {
+    public List<ChecklistIntervento> getLista() {
         return lista;
     }
-    public void setLista(List<Checklist> lista) {
+    public void setLista(List<ChecklistIntervento> lista) {
         this.lista = lista;
     }
 }

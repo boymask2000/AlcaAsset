@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText userText, passText;
 
 
+    private static String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 retrofit = RetrofitInstance.getRetrofitInstance();
                 ApiService apiService = retrofit.create(ApiService.class);
 
-                String userName = userText.getText().toString();
+                 userName = userText.getText().toString();
                 String password = passText.getText().toString();
 
                 if (userName.equalsIgnoreCase("pippo")) {
@@ -177,4 +179,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+    public static String getUserName() {
+        return userName;
+    }
+
 }

@@ -37,7 +37,6 @@ public class ScannerActivity extends Activity {
                     @Override
                     public void run() {
                         String value = result.getText();
-                    //    value = "85620";
                         textCodice.setText(value);
                         startNext(value);
                     }
@@ -57,10 +56,11 @@ public class ScannerActivity extends Activity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String value=textCodice.getText().toString();
+                if( value.equals("0"))value="2082-CP-005-G";
                 Toast.makeText(getApplicationContext(),
                         "Redirecting...", Toast.LENGTH_SHORT).show();
-                startNext(textCodice.getText().toString());
+                startNext(value);
             }
         });
     }

@@ -254,7 +254,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/lin4"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
@@ -265,4 +265,5 @@
             android:layout_marginRight="10dp"
             android:text="Allega foto" />
     </LinearLayout>
+
 </RelativeLayout>

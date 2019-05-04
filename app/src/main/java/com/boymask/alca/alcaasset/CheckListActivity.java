@@ -7,11 +7,17 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.boymask.alca.alcaasset.common.Beep;
+import com.boymask.alca.alcaasset.common.Global;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
+import com.boymask.alca.alcaasset.rest.beans.Asset;
+import com.boymask.alca.alcaasset.rest.beans.Checklist;
+import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
+import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
 
 import java.io.Serializable;
+import java.util.List;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -22,6 +28,8 @@ import retrofit2.Retrofit;
 
 public class CheckListActivity extends AppCompatActivity {
 
+    private String rfid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,54 +37,101 @@ public class CheckListActivity extends AppCompatActivity {
 
 
         Bundle b = getIntent().getExtras();
-        String assetKey = null; // or other values
+        rfid = null; // or other values
         if (b != null)
-            assetKey = b.getString("assetKey");
+            rfid = b.getString("assetKey");
 
+        recuperaAsset();
+
+
+    }
+
+    private void recuperaAsset() {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
         ApiService apiService = retrofit.create(ApiService.class);
+        Single<ChecklistRestBean> sing = apiService.getChecklist(rfid, "checklist");
 
-
-        Single<ChecklistRestBean> lista = apiService.getChecklist(assetKey, "checklist");
-
-        lista.subscribeOn(Schedulers.io())
+        sing.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<ChecklistRestBean>() {
+
+
             @Override
             public void onSubscribe(Disposable d) {
-            //    d.dispose();
+
             }
 
             @Override
-            public void onSuccess(ChecklistRestBean crb) {
+            public void onSuccess(ChecklistRestBean checklistRestBean) {
+                Log.d("GGG", "" + checklistRestBean.getAsset().getId());
+                Global.setAsset(checklistRestBean.getAsset());
 
-           /*     List<Checklist> u = crb.getLista();
-
-                for (Checklist c : u)
-                    Log.d("aa", c.getDescription());*/
-
-                if (crb.getAsset() == null) {
-
-                    Toast.makeText(getApplicationContext(),
-                            "Asset non trovato", Toast.LENGTH_LONG).show();
-
-                    finish();
-                } else {
-                    Beep.play();
-
-
-                    Intent intent = new Intent(CheckListActivity.this, ScrollingActivity.class);
-                    Bundle b = new Bundle();
-                    b.putSerializable("ChecklistRestBean", (Serializable) crb);
-                    intent.putExtras(b);
-                    startActivityForResult(intent, 1);
-                }
+                recuperaIntervento();
             }
-
 
             @Override
             public void onError(Throwable e) {
-                System.out.println("Error " + e);
-                Log.d("11", "fail", e);
+
+            }
+        });
+
+    }
+
+    private void recuperaIntervento() {
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        ApiService apiService = retrofit.create(ApiService.class);
+        Single<InterventoRestBean> lista = apiService.getNextIntervento(rfid, "checklist");
+
+        lista.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<InterventoRestBean>() {
+
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(InterventoRestBean interventoRestBean) {
+                Log.d("hh", "" + interventoRestBean.getId());
+                Log.d("hh", "" + interventoRestBean.getData_pianificata());
+                getChecklist(interventoRestBean.getId());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+        });
+    }
+
+    private void getChecklist(final long id) {
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        ApiService apiService = retrofit.create(ApiService.class);
+        final Single<List<ChecklistIntervento>> lista = apiService.getChecksForIntervento(id, "checklist");
+
+        lista.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<List<ChecklistIntervento>>() {
+
+
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(List<ChecklistIntervento> checklistRestBeans) {
+                ChecklistRestBean crb = new ChecklistRestBean();
+                crb.setInterventoId(id);
+                crb.setLista(checklistRestBeans);
+                Intent intent = new Intent(CheckListActivity.this, ScrollingActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("ChecklistRestBean", (Serializable) crb);
+                intent.putExtras(b);
+                startActivityForResult(intent, 1);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
             }
         });
     }
@@ -88,4 +143,6 @@ public class CheckListActivity extends AppCompatActivity {
             finish();
         }
     }
+
+
 }

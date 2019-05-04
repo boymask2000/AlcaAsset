@@ -9,6 +9,17 @@ private long id;
     private String data_pianificata;
     private String data_effettiva;
     private int esito;
+
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    private String user;
     public long getId() {
         return id;
     }
