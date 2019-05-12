@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -22,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AndroidCameraApiActivity"></activity>
+        <activity android:name=".TakePhotoActivity"></activity>
+        <activity android:name=".AndroidCameraApiActivity" />
         <activity android:name=".AudioRecordActivity" />
         <activity android:name=".RichiestaNuovoInterventoActivity" />
         <activity android:name=".AssetPreferencesActivity" />

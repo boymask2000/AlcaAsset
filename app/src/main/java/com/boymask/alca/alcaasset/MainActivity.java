@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.Utente;
@@ -93,16 +94,21 @@ public class MainActivity extends AppCompatActivity {
                         public void onError(Throwable e) {
                             System.out.println("Error " + e);
                             Log.d("11", "fail", e);
+                            Log.d("lll", e.getMessage());
+                            if( e instanceof java.net.ConnectException){
+                                     Util.showMessage(b1, R.string.problemi_di_collegamento);
+
+                            }
                         }
                     });
                 }
             }
         });
 
-     /*   b2.setOnClickListener(new View.OnClickListener() {
+      /* b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, AssetPreferencesActivity.class);
+                Intent i = new Intent(MainActivity.this, TakePhotoActivity.class);
                 startActivity(i);
             }
         });*/

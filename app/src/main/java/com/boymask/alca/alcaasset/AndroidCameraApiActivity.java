@@ -283,6 +283,7 @@ public class AndroidCameraApiActivity extends AppCompatActivity {
                 Toast.makeText(AndroidCameraApiActivity.this, "" + "Ok", Toast.LENGTH_LONG).show();
                 Log.d("d", "response");
                 pictureFile.delete();
+            //    closeCamera();
                 finish();
             }
 
@@ -292,6 +293,7 @@ public class AndroidCameraApiActivity extends AppCompatActivity {
                 Log.d("d", "fail");
                 pictureFile.delete();
                 t.printStackTrace();
+           //     closeCamera();
                 finish();
             }
         });

@@ -5,6 +5,6 @@
         "Material is the metaphor.\n\n"
     </string>
     <string name="action_settings">Settings</string>
-    <string name="problemi_di_collegamento">Problemi di collegamento al server</string>
-    <string name="asset_non_trovato">Asset non trovato</string>
+    <string name="problemi_di_collegamento">Unable to connect to server server</string>
+    <string name="asset_non_trovato">Asset not found</string>
 </resources>

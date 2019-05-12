@@ -2,16 +2,15 @@ package com.boymask.alca.alcaasset;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.boymask.alca.alcaasset.common.Beep;
 import com.boymask.alca.alcaasset.common.Global;
+import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
-import com.boymask.alca.alcaasset.rest.beans.Asset;
-import com.boymask.alca.alcaasset.rest.beans.Checklist;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
@@ -62,6 +61,20 @@ public class CheckListActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(ChecklistRestBean checklistRestBean) {
+                if( checklistRestBean.getAsset()==null){
+
+                    Toast.makeText(getApplicationContext(),
+                            R.string.asset_non_trovato, Toast.LENGTH_LONG).show();
+                    /*Util.showMessage(findViewById(R.id.coordinatorLayout), R.string.asset_non_trovato);
+
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }*/
+                    finish();
+                    return;
+                }
                 Log.d("GGG", "" + checklistRestBean.getAsset().getId());
                 Global.setAsset(checklistRestBean.getAsset());
 
@@ -70,7 +83,11 @@ public class CheckListActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
+Log.d("lll", e.getMessage());
+            if( e instanceof java.net.ConnectException){
+           //     Util.showMessage(findViewById(R.id.button), R.string.problemi_di_collegamento);
 
+            }
             }
         });
 
