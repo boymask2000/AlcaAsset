@@ -1,12 +1,17 @@
 package com.boymask.alca.alcaasset;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,8 +20,6 @@ import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.Asset;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
-
-import java.util.List;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -105,6 +108,7 @@ public class InterventoActivity extends Activity {
             }
         });
       //  Button audio = (Button) findViewById(R.id.audio);
+        final EditText commento = (EditText) findViewById(R.id.commento);
         Button foto = (Button) findViewById(R.id.photo);
         Button esci = (Button) findViewById(R.id.esci);
         esci.setOnClickListener(new View.OnClickListener() {
@@ -114,12 +118,14 @@ public class InterventoActivity extends Activity {
             }
         });
         setFoto(foto,inter);
+
     //    setAudio(audio,inter);
 
         Button ok = (Button) findViewById(R.id.ok);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                inter.setCommento(commento.getText().toString());
                 Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
                 ApiService apiService = retrofit.create(ApiService.class);
 
@@ -138,6 +144,10 @@ public class InterventoActivity extends Activity {
                 });
             }
         });
+    }
+
+    private void setCommento(Button b, InterventoRestBean inter) {
+
     }
 
     private void setFoto(Button b, final InterventoRestBean inter) {

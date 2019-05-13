@@ -9,7 +9,15 @@ private long id;
     private String data_pianificata;
     private String data_effettiva;
     private int esito;
+    private String commento;
 
+    public String getCommento() {
+        return commento;
+    }
+
+    public void setCommento(String commento) {
+        this.commento = commento;
+    }
 
     public String getUser() {
         return user;

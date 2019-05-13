@@ -231,16 +231,6 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:text="Conferma ed esci" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/lin4"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/lin3"
-        android:layout_marginTop="60dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
 
         <Button
             android:id="@+id/esci"
@@ -250,10 +240,32 @@
             android:text="Esci senza confermare" />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/lin6"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lin3"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/commento"
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:maxLines="4"
+            android:minLines="2"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/lin5"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lin4"
+        android:layout_below="@id/lin6"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
