@@ -69,7 +69,7 @@ public class ScannerActivity extends Activity {
         Toast.makeText(ScannerActivity.this, value, Toast.LENGTH_SHORT).show();
         Log.d("aa", value);
 
-        Intent intent = new Intent(ScannerActivity.this, CheckListActivity.class);
+        Intent intent = new Intent(ScannerActivity.this, SafetyActivity.class);
         Bundle b = new Bundle();
         b.putString("assetKey", value);
         intent.putExtras(b);

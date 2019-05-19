@@ -1,9 +1,14 @@
 package com.boymask.alca.alcaasset;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.boymask.alca.alcaasset.common.Global;
@@ -12,6 +17,7 @@ import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
+import com.boymask.alca.alcaasset.rest.beans.SafetyRestBean;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,15 +29,13 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
-public class CheckListActivity extends AppCompatActivity {
-
+public class SafetyActivity extends Activity {
     private String rfid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_list);
-
+        setContentView(R.layout.activity_safety);
 
         Bundle b = getIntent().getExtras();
         rfid = null; // or other values
@@ -39,8 +43,6 @@ public class CheckListActivity extends AppCompatActivity {
             rfid = b.getString("assetKey");
 
         recuperaAsset();
-
-
     }
 
     private void recuperaAsset() {
@@ -63,13 +65,7 @@ public class CheckListActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),
                             R.string.asset_non_trovato, Toast.LENGTH_LONG).show();
-                    /*Util.showMessage(findViewById(R.id.coordinatorLayout), R.string.asset_non_trovato);
 
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }*/
                     finish();
                     return;
                 }
@@ -81,16 +77,15 @@ public class CheckListActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
-Log.d("lll", e.getMessage());
-            if( e instanceof java.net.ConnectException){
-           //     Util.showMessage(findViewById(R.id.button), R.string.problemi_di_collegamento);
+                Log.d("lll", e.getMessage());
+                if( e instanceof java.net.ConnectException){
+                    //     Util.showMessage(findViewById(R.id.button), R.string.problemi_di_collegamento);
 
-            }
+                }
             }
         });
 
     }
-
     private void recuperaIntervento() {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
         ApiService apiService = retrofit.create(ApiService.class);
@@ -108,7 +103,7 @@ Log.d("lll", e.getMessage());
             public void onSuccess(InterventoRestBean interventoRestBean) {
                 Log.d("hh", "" + interventoRestBean.getId());
                 Log.d("hh", "" + interventoRestBean.getData_pianificata());
-                getChecklist(interventoRestBean.getId());
+                getSafety(interventoRestBean.getId());
             }
 
             @Override
@@ -118,13 +113,13 @@ Log.d("lll", e.getMessage());
         });
     }
 
-    private void getChecklist(final long id) {
+    private void getSafety(final long id) {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
         ApiService apiService = retrofit.create(ApiService.class);
-        final Single<List<ChecklistIntervento>> lista = apiService.getChecksForIntervento(id, "checklist");
+        final Single<SafetyRestBean> lista = apiService.getSafety(rfid, "checklist");
 
         lista.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<List<ChecklistIntervento>>() {
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<SafetyRestBean>() {
 
 
             @Override
@@ -133,15 +128,14 @@ Log.d("lll", e.getMessage());
             }
 
             @Override
-            public void onSuccess(List<ChecklistIntervento> checklistRestBeans) {
-                ChecklistRestBean crb = new ChecklistRestBean();
-                crb.setInterventoId(id);
-                crb.setLista(checklistRestBeans);
-                Intent intent = new Intent(CheckListActivity.this, ScrollingActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("ChecklistRestBean", (Serializable) crb);
-                intent.putExtras(b);
-                startActivityForResult(intent, 1);
+            public void onSuccess(SafetyRestBean safetyRestBean) {
+                TextView testo = (TextView) findViewById(R.id.testo);
+                testo.setText(safetyRestBean.getTesto());
+
+                Button  ok = (Button) findViewById(R.id.ok);
+                Button  cancel = (Button) findViewById(R.id.cancel);
+                setOk(ok);
+                setCancel(cancel);
             }
 
             @Override
@@ -149,6 +143,21 @@ Log.d("lll", e.getMessage());
 
             }
         });
+    }
+
+    private void setCancel(Button cancel) {
+    }
+
+    private void setOk(Button ok) {
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SafetyActivity.this, CheckListActivity.class);
+                Bundle b = new Bundle();
+                b.putString("assetKey", rfid);
+                intent.putExtras(b);
+                startActivityForResult(intent,1);
+            }});
     }
 
     @Override
@@ -158,6 +167,5 @@ Log.d("lll", e.getMessage());
             finish();
         }
     }
-
 
 }

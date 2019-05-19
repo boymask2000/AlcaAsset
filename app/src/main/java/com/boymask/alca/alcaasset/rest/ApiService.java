@@ -5,6 +5,7 @@ import com.boymask.alca.alcaasset.rest.beans.Checklist;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
+import com.boymask.alca.alcaasset.rest.beans.SafetyRestBean;
 import com.boymask.alca.alcaasset.rest.beans.Utente;
 
 import java.util.List;
@@ -36,6 +37,12 @@ public interface ApiService {
 
     @GET("intervento/getnext/{rfid}")
     Single<InterventoRestBean> getNextIntervento(@Path("rfid") String rfid, @Query("interventi") String apiKey);
+
+    @GET("intervento/getsafety/{rfid}")
+    Single<SafetyRestBean> getSafety(@Path("rfid") String rfid, @Query("interventi") String apiKey);
+
+
+
 
     @Headers("Content-Type: application/json")
     @POST("intervento/updateIntervento")
