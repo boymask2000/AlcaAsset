@@ -118,7 +118,7 @@ public class AudioRecordActivity extends AppCompatActivity {
     }
 
     private void invioAudio() {
-        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
         ApiService apiService = retrofit.create(ApiService.class);
         File fName = new File(fileName);
         // File file = new File("pp");

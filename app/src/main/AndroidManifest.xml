@@ -22,7 +22,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SafetyActivity"></activity>
         <activity android:name=".TakePhotoActivity" />
         <activity android:name=".AndroidCameraApiActivity" />
         <activity android:name=".AudioRecordActivity" />
@@ -34,6 +33,8 @@
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".CheckListActivity" />
+        <activity android:name=".CheckListSafetyActivity" />
+        <activity android:name=".ScrollingSafetyActivity" />
         <activity android:name=".ScannerActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

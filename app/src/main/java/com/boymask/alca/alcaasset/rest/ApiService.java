@@ -39,7 +39,7 @@ public interface ApiService {
     Single<InterventoRestBean> getNextIntervento(@Path("rfid") String rfid, @Query("interventi") String apiKey);
 
     @GET("intervento/getsafety/{rfid}")
-    Single<SafetyRestBean> getSafety(@Path("rfid") String rfid, @Query("interventi") String apiKey);
+    Single<List<SafetyRestBean>> getSafetyChecklistForFamily(@Path("rfid") String rfid, @Query("interventi") String apiKey);
 
 
 

@@ -1,8 +1,8 @@
 package com.boymask.alca.alcaasset;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,9 +23,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
-public class CheckListActivity extends AppCompatActivity {
+public class CheckListActivity extends Activity {
 
     private String rfid;
+    private String family;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +36,19 @@ public class CheckListActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         rfid = null; // or other values
-        if (b != null)
+        if (b != null) {
             rfid = b.getString("assetKey");
-
+            family = b.getString("family");
+        }
         recuperaAsset();
 
 
     }
-
     private void recuperaAsset() {
-        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        recuperaIntervento();
+    }
+    private void recuperaAsset1() {
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
         ApiService apiService = retrofit.create(ApiService.class);
         Single<ChecklistRestBean> sing = apiService.getChecklist(rfid, "checklist");
 
@@ -92,7 +96,7 @@ Log.d("lll", e.getMessage());
     }
 
     private void recuperaIntervento() {
-        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
         ApiService apiService = retrofit.create(ApiService.class);
         Single<InterventoRestBean> lista = apiService.getNextIntervento(rfid, "checklist");
 
@@ -119,7 +123,7 @@ Log.d("lll", e.getMessage());
     }
 
     private void getChecklist(final long id) {
-        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
         ApiService apiService = retrofit.create(ApiService.class);
         final Single<List<ChecklistIntervento>> lista = apiService.getChecksForIntervento(id, "checklist");
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.budiyev.android.codescanner.CodeScanner;
@@ -27,6 +28,7 @@ public class ScannerActivity extends Activity {
         setContentView(R.layout.activity_scanner);
 
         final EditText textCodice = findViewById(R.id.codiceAsset);
+        final TextView full = findViewById(R.id.full);
 
         CodeScannerView scannerView = findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(this, scannerView);
@@ -37,7 +39,8 @@ public class ScannerActivity extends Activity {
                     @Override
                     public void run() {
                         String value = result.getText();
-                        textCodice.setText(value);
+                        textCodice.setText(getFirst(value));
+                        full.setText(value);
                         startNext(value);
                     }
                 });
@@ -51,13 +54,12 @@ public class ScannerActivity extends Activity {
         });
 
 
-
         Button ok = (Button) findViewById(R.id.button);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String value=textCodice.getText().toString();
-                if( value.equals("0"))value="2082-CP-005-G";
+                String value = textCodice.getText().toString();
+                if (value.equals("0")) value = "2082-CKV-011-R";
                 Toast.makeText(getApplicationContext(),
                         "Redirecting...", Toast.LENGTH_SHORT).show();
                 startNext(value);
@@ -65,11 +67,20 @@ public class ScannerActivity extends Activity {
         });
     }
 
+    private String getFirst(String value) {
+        int index = value.indexOf('\n');
+        if (index != -1) return value.substring(0, index);
+        index = value.indexOf(' ');
+        if (index != -1) return value.substring(0, index);
+        return value;
+
+    }
+
     private void startNext(String value) {
         Toast.makeText(ScannerActivity.this, value, Toast.LENGTH_SHORT).show();
         Log.d("aa", value);
 
-        Intent intent = new Intent(ScannerActivity.this, SafetyActivity.class);
+        Intent intent = new Intent(ScannerActivity.this, CheckListSafetyActivity.class);
         Bundle b = new Bundle();
         b.putString("assetKey", value);
         intent.putExtras(b);

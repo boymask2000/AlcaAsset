@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // create an instance of the ApiService
                 Retrofit retrofit;
-                retrofit = RetrofitInstance.getRetrofitInstance();
+                retrofit = RetrofitInstance.getRetrofitInstance(MainActivity.this);
                 ApiService apiService = retrofit.create(ApiService.class);
 
                  userName = userText.getText().toString();

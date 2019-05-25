@@ -48,7 +48,7 @@ public class InterventoActivity extends Activity {
 
     private void getInterventi(long id) {
 
-        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
         ApiService apiService = retrofit.create(ApiService.class);
 
 
@@ -122,7 +122,7 @@ public class InterventoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 inter.setCommento(commento.getText().toString());
-                Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+                Retrofit retrofit = RetrofitInstance.getRetrofitInstance(InterventoActivity.this);
                 ApiService apiService = retrofit.create(ApiService.class);
 
                 apiService.updateIntervento(inter).enqueue(new Callback<InterventoRestBean>() {

@@ -89,7 +89,7 @@ public class RichiestaNuovoInterventoActivity extends AppCompatActivity {
                 irb.setData_effettiva("");
                 irb.setData_teorica("");
 
-                Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+                Retrofit retrofit = RetrofitInstance.getRetrofitInstance(RichiestaNuovoInterventoActivity.this);
                 ApiService apiService = retrofit.create(ApiService.class);
 
                 apiService.creaIntervento(irb).enqueue(new Callback<InterventoRestBean>() {

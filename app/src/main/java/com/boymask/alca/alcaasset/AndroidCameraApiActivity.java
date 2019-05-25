@@ -269,7 +269,7 @@ public class AndroidCameraApiActivity extends AppCompatActivity {
     }
 
     private void invia(final File pictureFile) {
-        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
         ApiService apiService = retrofit.create(ApiService.class);
 
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", pictureFile.getName(), RequestBody.create(MediaType.parse("image/*"), pictureFile));
