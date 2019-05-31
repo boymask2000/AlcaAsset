@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="data_pianificata">Planned date:</string>
+    <string name="barcode">Bar code</string>
+    <string name="selezionare_esito_intervento">Select intervention outcome</string>
+</resources>

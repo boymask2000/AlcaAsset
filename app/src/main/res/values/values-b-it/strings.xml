@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Asset</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
@@ -5,16 +6,17 @@
         "Material is the metaphor.\n\n"
     </string>
     <string name="action_settings">Settings</string>
-    <string name="problemi_di_collegamento">Unable to connecot to server</string>
-    <string name="asset_non_trovato">Asset not found</string>
-    <string name="barcode">Bar Code</string>
-    <string name="confirmcheck">Confirm these steps by clicking the checkbox next each row:</string>
-    <string name="checklist_sicurezza">Security Checklist:</string>
+    <string name="problemi_di_collegamento">Problemi di collegamento al server</string>
+    <string name="asset_non_trovato">Asset non trovato</string>
+    <string name="barcode">Codice</string>
+    <string name="confirmcheck">Confermare i seguenti passi selezionando il buttone a sinistra di ciascuna voce:</string>
+    <string name="checklist_sicurezza">Checklist sicurezza:</string>
     <string name="data_pianificata">Data pianificata:</string>
-    <string name="selezionare_esito_intervento">Select intervention outcome</string>
+    <string name="selezionare_esito_intervento">Selezionare esito intervento:</string>
     <string name="esito_selezionato">Esito selezionato:</string>
     <string name="pianifica_nuovo_intervento">Pianifica nuovo intervento</string>
     <string name="conferma_ed_esci">Conferma ed esci</string>
     <string name="esci_senza_confermare">Esci senza confermare</string>
     <string name="allega_foto">Allega foto</string>
+
 </resources>

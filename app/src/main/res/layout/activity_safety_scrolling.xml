@@ -12,14 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Checklist sicurezza:" />
+        android:text="@string/checklist_sicurezza" />
 
     <TextView
         android:id="@+id/mainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/mainText1"
-        android:text="Confermare i seguenti passi selezionando il buttone a sinistra di ciascuna voce:" />
+        android:text="@string/confirmcheck"/>
 
     <LinearLayout
         android:layout_width="match_parent"

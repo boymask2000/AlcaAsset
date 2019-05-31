@@ -23,7 +23,7 @@
         android:layout_below="@id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Confermare i seguenti passi selezionando il buttone a sinistra di ciascuna voce:" />
+        android:text="@string/confirmcheck" />
 
     <ListView
         android:id="@+id/list"

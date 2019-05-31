@@ -14,7 +14,7 @@
         android:id="@+id/mainText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Data pianificata:" />
+        android:text="@string/data_pianificata" />
 
     <TextView
         android:id="@+id/dataPianificata"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/dataPianificata"
         android:gravity="center_horizontal"
-        android:text="Selezionare esito intervento:" />
+        android:text="@string/selezionare_esito_intervento" />
 
 
 
@@ -189,7 +189,7 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Esito selezionato:" />
+            android:text="@string/esito_selezionato" />
 
         <Button
             android:id="@+id/buttonScelta"
@@ -213,7 +213,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="Pianifica nuovo intervento" />
+            android:text="@string/pianifica_nuovo_intervento" />
     </LinearLayout>
 
     <LinearLayout
@@ -230,14 +230,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="Conferma ed esci" />
+            android:text="@string/conferma_ed_esci" />
 
         <Button
             android:id="@+id/esci"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="Esci senza confermare" />
+            android:text="@string/esci_senza_confermare" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/lin6"
@@ -275,7 +275,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="Allega foto" />
+            android:text="@string/allega_foto" />
     </LinearLayout>
 
 </RelativeLayout>

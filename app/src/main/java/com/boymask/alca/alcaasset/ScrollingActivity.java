@@ -24,6 +24,7 @@ import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,11 +35,15 @@ public class ScrollingActivity extends AppCompatActivity {
 
     private Map<Integer, Boolean> checkMap = new HashMap<>();
     private Button ok;
-    ListView listview;
-    TextView assetDesc;
+    private ListView listview;
+    private TextView assetDesc;
+    private String language;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Locale current = getResources().getConfiguration().locale;
+        language = current.getLanguage();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
 
@@ -51,8 +56,7 @@ public class ScrollingActivity extends AppCompatActivity {
         InterventoRestBean irb = null;
         ChecklistRestBean crb = (ChecklistRestBean) b.getSerializable("ChecklistRestBean");
 
-        next(crb.getLista(),crb.getInterventoId());
-
+        next(crb.getLista(), crb.getInterventoId());
 
 
     }
@@ -169,7 +173,10 @@ public class ScrollingActivity extends AppCompatActivity {
             View rowView = inflater.inflate(R.layout.row_layout, null, true);
             TextView txtTitle = (TextView) rowView.findViewById(R.id.txt);
 
-            txtTitle.setText(""+lista.get(position).getDescription());
+            if (language.equals("en"))
+                txtTitle.setText("" + lista.get(position).getDescriptionUS());
+            else
+                txtTitle.setText("" + lista.get(position).getDescription());
 
             return rowView;
         }

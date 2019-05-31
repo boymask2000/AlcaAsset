@@ -7,4 +7,14 @@
     <string name="action_settings">Settings</string>
     <string name="problemi_di_collegamento">Unable to connect to server server</string>
     <string name="asset_non_trovato">Asset not found</string>
+    <string name="barcode">Bar Code</string>
+    <string name="confirmcheck">Confirm these steps by clicking the checkbox next each row:</string>
+    <string name="checklist_sicurezza">Security Checklist:</string>
+    <string name="data_pianificata">Planned date:</string>
+    <string name="selezionare_esito_intervento">Select intervention outcome:</string>
+    <string name="esito_selezionato">Esito selezionato:</string>
+    <string name="pianifica_nuovo_intervento">Plan new intervention</string>
+    <string name="conferma_ed_esci">Confirm and exit</string>
+    <string name="esci_senza_confermare">Exit without confirming</string>
+    <string name="allega_foto">Attach photo</string>
 </resources>
