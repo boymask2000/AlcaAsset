@@ -12,9 +12,10 @@
     <string name="checklist_sicurezza">Security Checklist:</string>
     <string name="data_pianificata">Data pianificata:</string>
     <string name="selezionare_esito_intervento">Select intervention outcome</string>
-    <string name="esito_selezionato">Esito selezionato:</string>
-    <string name="pianifica_nuovo_intervento">Pianifica nuovo intervento</string>
-    <string name="conferma_ed_esci">Conferma ed esci</string>
-    <string name="esci_senza_confermare">Esci senza confermare</string>
-    <string name="allega_foto">Allega foto</string>
+    <string name="esito_selezionato">Selected Outcome:</string>
+    <string name="pianifica_nuovo_intervento">Plan new intervention</string>
+    <string name="conferma_ed_esci">Confirm and exit</string>
+    <string name="esci_senza_confermare">Exit without confirming</string>
+    <string name="allega_foto">Attach photo</string>
+    <string name="insert_commento">Inserire commento</string>
 </resources>

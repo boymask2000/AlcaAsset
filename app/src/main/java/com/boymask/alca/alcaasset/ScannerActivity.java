@@ -59,7 +59,7 @@ public class ScannerActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String value = textCodice.getText().toString();
-                if (value.equals("0")) value = "2082-CKV-011-R";
+                if (value.equals("0")) value = "2082-CKV-012-FLR-2";
                 Toast.makeText(getApplicationContext(),
                         "Redirecting...", Toast.LENGTH_SHORT).show();
                 startNext(value);

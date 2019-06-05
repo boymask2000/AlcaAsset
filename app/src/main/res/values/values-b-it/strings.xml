@@ -18,5 +18,6 @@
     <string name="conferma_ed_esci">Conferma ed esci</string>
     <string name="esci_senza_confermare">Esci senza confermare</string>
     <string name="allega_foto">Allega foto</string>
+    <string name="insert_commento">Inserire commento</string>
 
 </resources>

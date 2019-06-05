@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.boymask.alca.alcaasset.common.Global;
+import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
@@ -62,17 +63,11 @@ public class CheckListSafetyActivity extends Activity {
 
             @Override
             public void onSuccess(ChecklistRestBean checklistRestBean) {
-                if( checklistRestBean.getAsset()==null){
+                if (checklistRestBean.getAsset() == null) {
 
                     Toast.makeText(getApplicationContext(),
                             R.string.asset_non_trovato, Toast.LENGTH_LONG).show();
-                    /*Util.showMessage(findViewById(R.id.coordinatorLayout), R.string.asset_non_trovato);
 
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }*/
                     finish();
                     return;
                 }
@@ -84,16 +79,17 @@ public class CheckListSafetyActivity extends Activity {
 
             @Override
             public void onError(Throwable e) {
-Log.d("lll", e.getMessage());
-            if( e instanceof java.net.ConnectException){
-           //     Util.showMessage(findViewById(R.id.button), R.string.problemi_di_collegamento);
 
-            }
+                if (e instanceof java.net.ConnectException) {
+                    //   Util.showMessage(findViewById(R.id.button), R.string.problemi_di_collegamento);
+                    Toast.makeText(CheckListSafetyActivity.this, R.string.problemi_di_collegamento, Toast.LENGTH_LONG).show();
+                    finish();
+                    return;
+                }
             }
         });
 
     }
-
 
 
     private void getChecklist(final String family) {
@@ -113,7 +109,7 @@ Log.d("lll", e.getMessage());
             @Override
             public void onSuccess(List<SafetyRestBean> safetyRestBeans) {
                 SafetyChecklistRestBean crb = new SafetyChecklistRestBean();
-              crb.setFamily(family);
+                crb.setFamily(family);
                 crb.setLista(safetyRestBeans);
                 Intent intent = new Intent(CheckListSafetyActivity.this, ScrollingSafetyActivity.class);
                 Bundle b = new Bundle();
