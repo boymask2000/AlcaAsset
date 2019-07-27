@@ -86,7 +86,7 @@ public class RichiestaNuovoInterventoActivity extends AppCompatActivity {
                         "Redirecting...", Toast.LENGTH_SHORT).show();
 
                 irb.setData_pianificata(data.getText().toString());
-                irb.setData_effettiva("");
+                irb.setData_effettiva(null);
                 irb.setData_teorica("");
 
                 Retrofit retrofit = RetrofitInstance.getRetrofitInstance(RichiestaNuovoInterventoActivity.this);

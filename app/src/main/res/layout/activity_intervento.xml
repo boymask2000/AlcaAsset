@@ -182,6 +182,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/table"
         android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <TextView
@@ -254,10 +255,10 @@
             android:text="@string/insert_commento" />
         <EditText
             android:id="@+id/commento"
-            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
+            android:background="@drawable/edittextstyle"
             android:lines="2"
             android:maxLines="4"
             android:minLines="2"
