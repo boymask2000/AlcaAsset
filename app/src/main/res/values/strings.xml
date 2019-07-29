@@ -5,7 +5,7 @@
         "Material is the metaphor.\n\n"
     </string>
     <string name="action_settings">Settings</string>
-    <string name="problemi_di_collegamento">Unable to connecot to server</string>
+    <string name="problemi_di_collegamento">Unable to connect to server</string>
     <string name="asset_non_trovato">Asset not found</string>
     <string name="barcode">Bar Code</string>
     <string name="confirmcheck">Confirm these steps by clicking the checkbox next each row:</string>

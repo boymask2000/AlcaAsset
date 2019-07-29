@@ -1,45 +1,56 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:paddingLeft="16pt"
     android:paddingTop="16pt"
     android:paddingRight="16pt"
     android:paddingBottom="16pt">
 
     <LinearLayout
+
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/assetDesc"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <TextView
+
         android:id="@+id/mainText"
-        android:layout_below="@id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/title"
         android:text="@string/confirmcheck" />
 
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/mainText"
+        android:orientation="vertical">
 
-        android:focusable="false"
-        android:focusableInTouchMode="false" />
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mainText"
+            android:layout_weight="5"
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/list"
-        android:text="Ok" />
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
 
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/list"
+            android:layout_weight="1"
+            android:text="Ok" />
+    </LinearLayout>
 
 </RelativeLayout>

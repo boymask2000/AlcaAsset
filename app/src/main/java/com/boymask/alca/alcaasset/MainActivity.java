@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.boymask.alca.alcaasset.common.Util;
@@ -32,9 +33,15 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity {
     private Button b1, b2;
     private EditText userText, passText;
-
+    private TextView server;
 
     private static String userName;
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        server.setText(Util.getServer(this));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         b1 = (Button) findViewById(R.id.button);
         userText = (EditText) findViewById(R.id.editText);
         passText = (EditText) findViewById(R.id.editText2);
+        server = (TextView) findViewById(R.id.server);
+        server.setText(Util.getServer(this));
 
         b2 = (Button) findViewById(R.id.button2);
 
@@ -55,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Toast.makeText(getApplicationContext(),
-                        "Redirecting...", Toast.LENGTH_SHORT).show();
+                        "Redirecting..."+Util.getServer(MainActivity.this), Toast.LENGTH_SHORT).show();
 
                 // create an instance of the ApiService
                 Retrofit retrofit;
