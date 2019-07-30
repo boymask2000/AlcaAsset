@@ -1,5 +1,6 @@
 package com.boymask.alca.alcaasset.rest;
 
+import com.boymask.alca.alcaasset.rest.beans.Asset;
 import com.boymask.alca.alcaasset.rest.beans.Check;
 import com.boymask.alca.alcaasset.rest.beans.Checklist;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
@@ -41,7 +42,11 @@ public interface ApiService {
     @GET("intervento/getsafety/{rfid}")
     Single<List<SafetyRestBean>> getSafetyChecklistForFamily(@Path("rfid") String rfid, @Query("interventi") String apiKey);
 
+    @GET("intervento/getprevious/{date}")
+    Single<Integer> getPreviousInterventi(@Path("date") String date, @Query("interventi") String apiKey );
 
+    @GET("intervento/getpreviousassets/{date}")
+    Single<List<Asset>> getPreviousInterventiAssets(@Path("date") String date, @Query("interventi") String apiKey );
 
 
     @Headers("Content-Type: application/json")

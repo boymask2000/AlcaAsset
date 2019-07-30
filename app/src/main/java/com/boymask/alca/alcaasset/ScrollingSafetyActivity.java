@@ -100,12 +100,12 @@ family=crb.getFamily();
                     checkMap.put(itemIndex, false);
                     itemCheckbox.setChecked(false);
                     updateOk();
-                    Log.d("dd", "no");
+                //    Log.d("dd", "no");
                 } else {
                     checkMap.put(itemIndex, true);
                     itemCheckbox.setChecked(true);
                     updateOk();
-                    Log.d("dd", "si");
+                 //   Log.d("dd", "si");
                 }
 
 

@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onSuccess(Utente u) {
 
                             if (u.getUsername() != null) {
-                                Intent intent = new Intent(MainActivity.this, ScannerActivity.class);
+                                Intent intent = new Intent(MainActivity.this, ToDoActivity.class);
                                 startActivity(intent);
 
                             } else
@@ -101,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable e) {
-                            System.out.println("Error " + e);
-                            Log.d("11", "fail", e);
-                            Log.d("lll", e.getMessage());
+//                            System.out.println("Error " + e);
+//                            Log.d("11", "fail", e);
+//                            Log.d("lll", e.getMessage());
                             if( e instanceof java.net.ConnectException){
                                      Util.showMessage(b1, R.string.problemi_di_collegamento);
 
