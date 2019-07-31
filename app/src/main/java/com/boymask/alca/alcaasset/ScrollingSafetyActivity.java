@@ -54,10 +54,9 @@ public class ScrollingSafetyActivity extends Activity {
         List<ChecklistIntervento> lista = null;
         InterventoRestBean irb = null;
         SafetyChecklistRestBean crb = (SafetyChecklistRestBean) b.getSerializable("SafetyChecklistRestBean");
-assetKey=b.getString("rfid");
-family=crb.getFamily();
+        assetKey = b.getString("rfid");
+        family = crb.getFamily();
         next(crb.getLista());
-
 
 
     }
@@ -66,9 +65,9 @@ family=crb.getFamily();
 
 
         if (checks.size() == 0) {
-            Toast.makeText(getApplicationContext(),
-                    "Nessun intevento previsto", Toast.LENGTH_LONG).show();
-            finish();
+//            Toast.makeText(getApplicationContext(),
+//                    "Nessun intevento previsto", Toast.LENGTH_LONG).show();
+            goNext();
             return;
         }
 
@@ -100,12 +99,12 @@ family=crb.getFamily();
                     checkMap.put(itemIndex, false);
                     itemCheckbox.setChecked(false);
                     updateOk();
-                //    Log.d("dd", "no");
+                    //    Log.d("dd", "no");
                 } else {
                     checkMap.put(itemIndex, true);
                     itemCheckbox.setChecked(true);
                     updateOk();
-                 //   Log.d("dd", "si");
+                    //   Log.d("dd", "si");
                 }
 
 
@@ -116,15 +115,19 @@ family=crb.getFamily();
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ScrollingSafetyActivity.this, CheckListActivity.class);
-                Bundle b = new Bundle();
-                b.putString("assetKey", assetKey);
-                b.putString("family", family);
-                intent.putExtras(b);
-                startActivityForResult(intent, 1);
+                goNext();
             }
         });
 
+    }
+
+    private void goNext() {
+        Intent intent = new Intent(ScrollingSafetyActivity.this, CheckListActivity.class);
+        Bundle b = new Bundle();
+        b.putString("assetKey", assetKey);
+        b.putString("family", family);
+        intent.putExtras(b);
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -176,8 +179,8 @@ family=crb.getFamily();
             TextView riskTitle = (TextView) rowView.findViewById(R.id.risk);
             TextView ppeTitle = (TextView) rowView.findViewById(R.id.ppe);
 
-            riskTitle.setText(""+lista.get(position).getRisk_en());
-            ppeTitle.setText(""+lista.get(position).getPpe_en());
+            riskTitle.setText("" + lista.get(position).getRisk_en());
+            ppeTitle.setText("" + lista.get(position).getPpe_en());
 
             return rowView;
         }
