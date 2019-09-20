@@ -140,6 +140,7 @@ Log.d("lll", e.getMessage());
             public void onSuccess(List<ChecklistIntervento> checklistRestBeans) {
                 ChecklistRestBean crb = new ChecklistRestBean();
                 crb.setInterventoId(id);
+                crb.setAssetId(rfid);
                 crb.setLista(checklistRestBeans);
                 Intent intent = new Intent(CheckListActivity.this, ScrollingActivity.class);
                 Bundle b = new Bundle();

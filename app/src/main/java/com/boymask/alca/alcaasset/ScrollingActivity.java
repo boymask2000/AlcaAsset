@@ -55,7 +55,8 @@ public class ScrollingActivity extends AppCompatActivity {
         List<ChecklistIntervento> lista = null;
         InterventoRestBean irb = null;
         ChecklistRestBean crb = (ChecklistRestBean) b.getSerializable("ChecklistRestBean");
-
+String id = crb.getAssetId();
+        assetDesc.setText(id);
         next(crb.getLista(), crb.getInterventoId());
 
 

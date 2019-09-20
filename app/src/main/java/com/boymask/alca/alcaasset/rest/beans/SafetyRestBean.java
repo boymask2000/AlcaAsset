@@ -9,6 +9,10 @@ public class SafetyRestBean implements Serializable {
     private String risk_en;
     private String risk_it;
 
+
+
+    private int imgId;
+
     public String getRisk_en() {
         return risk_en;
     }
@@ -66,6 +70,12 @@ public class SafetyRestBean implements Serializable {
     public void setTesto(String testo) {
         this.testo = testo;
     }
+    public int getImgId() {
+        return imgId;
+    }
 
+    public void setImgId(int imgId) {
+        this.imgId = imgId;
+    }
     private String testo;
 }

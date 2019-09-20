@@ -2,6 +2,7 @@ package com.boymask.alca.alcaasset;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,8 +38,9 @@ public class ScrollingSafetyActivity extends Activity {
 
     private Map<Integer, Boolean> checkMap = new HashMap<>();
     private Button ok;
-    ListView listview;
-    TextView assetDesc;
+    private ListView listview;
+    private TextView assetDesc;
+    private TextView rpid;
     private String assetKey;
     private String family;
 
@@ -48,6 +51,7 @@ public class ScrollingSafetyActivity extends Activity {
 
         listview = (ListView) findViewById(R.id.list);
         assetDesc = (TextView) findViewById(R.id.assetDesc);
+        rpid = (TextView) findViewById(R.id.rpid);
         ok = (Button) findViewById(R.id.button);
 
         Bundle b = getIntent().getExtras();
@@ -55,6 +59,7 @@ public class ScrollingSafetyActivity extends Activity {
         InterventoRestBean irb = null;
         SafetyChecklistRestBean crb = (SafetyChecklistRestBean) b.getSerializable("SafetyChecklistRestBean");
         assetKey = b.getString("rfid");
+        rpid.setText(assetKey);
         family = crb.getFamily();
         next(crb.getLista());
 
@@ -178,11 +183,25 @@ public class ScrollingSafetyActivity extends Activity {
             View rowView = inflater.inflate(R.layout.safety_row_layout, null, true);
             TextView riskTitle = (TextView) rowView.findViewById(R.id.risk);
             TextView ppeTitle = (TextView) rowView.findViewById(R.id.ppe);
+            ImageView imageV = (ImageView) rowView.findViewById(R.id.imageicon);
 
             riskTitle.setText("" + lista.get(position).getRisk_en());
             ppeTitle.setText("" + lista.get(position).getPpe_en());
+            int resourceId = getResource(position);
+            if (resourceId > 0)
+                imageV.setImageResource(resourceId);
 
             return rowView;
+        }
+
+        private int getResource(int position) {
+            // int id = getResources().getIdentifier("com.boymask.alca.alcaasset:drawable/ppe_" + position, null, null);
+            int imgId = lista.get(position).getImgId();
+
+            int id = getResources().getIdentifier("ppe_" + imgId, "drawable",
+                    context.getPackageName());
+
+            return id;
         }
 
 

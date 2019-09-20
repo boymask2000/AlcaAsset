@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 
 public class ChecklistRestBean implements Serializable {
+
+
     /**
      *
      */
+    private String assetId;
     private static final long serialVersionUID = 1L;
     private Asset asset;
 
@@ -31,5 +34,12 @@ public class ChecklistRestBean implements Serializable {
     }
     public void setLista(List<ChecklistIntervento> lista) {
         this.lista = lista;
+    }
+    public String getAssetId() {
+        return assetId;
+    }
+
+    public void setAssetId(String assetId) {
+        this.assetId = assetId;
     }
 }
