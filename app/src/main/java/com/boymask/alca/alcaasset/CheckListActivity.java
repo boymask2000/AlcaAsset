@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.boymask.alca.alcaasset.common.Global;
+import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
@@ -15,6 +16,7 @@ import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -117,6 +119,11 @@ Log.d("lll", e.getMessage());
 
             @Override
             public void onError(Throwable e) {
+                e.printStackTrace();
+                if( e instanceof NoSuchElementException){
+                    Util.showAlert(getApplicationContext(), "Nessun intervento trovato");
+                    finish();
+                }
 
             }
         });

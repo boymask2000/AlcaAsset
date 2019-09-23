@@ -1,7 +1,10 @@
 package com.boymask.alca.alcaasset;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,7 +21,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
 import com.boymask.alca.alcaasset.common.Util;
+import com.boymask.alca.alcaasset.network.NetworkUtil;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.Utente;
@@ -41,12 +46,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         server.setText(Util.getServer(this));
+        Log.e("NETWORK", "Post");
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+Log.e("NETWORK", "Res");
+     //  NetworkUtil.initNetworkMonitor(this);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("NETWORK", "Pause");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        showVersion();
+
+        AndroidNetworking.initialize(getApplicationContext());
+
 
         initRetrofit();
 
@@ -94,18 +115,20 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent = new Intent(MainActivity.this, ToDoActivity.class);
                                 startActivity(intent);
 
-                            } else
+                            } else {
+                                Util.showAlert(MainActivity.this,"Credenzali errate");
                                 Toast.makeText(getApplicationContext(),
                                         "Credenzali errate", Toast.LENGTH_LONG).show();
+                            }
                         }
 
                         @Override
                         public void onError(Throwable e) {
-//                            System.out.println("Error " + e);
-//                            Log.d("11", "fail", e);
-//                            Log.d("lll", e.getMessage());
+
                             if( e instanceof java.net.ConnectException){
-                                     Util.showMessage(b1, R.string.problemi_di_collegamento);
+
+                                Util.showAlert(MainActivity.this,
+                                        "Impossibile connettersi al server "+Util.getServer(MainActivity.this));
 
                             }
                         }
@@ -198,4 +221,15 @@ public class MainActivity extends AppCompatActivity {
         return userName;
     }
 
+    private void showVersion(){
+        PackageInfo pInfo = null;
+        try {
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String version = pInfo.versionName;
+        TextView versionText = (TextView) findViewById(R.id.appversion);
+        versionText.setText("Version: " + version);
+    }
 }

@@ -19,6 +19,7 @@ import com.boymask.alca.alcaasset.rest.beans.SafetyRestBean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -71,10 +72,9 @@ public class CheckListSafetyActivity extends Activity {
                     finish();
                     return;
                 }
-                Log.d("GGG", "" + checklistRestBean.getAsset().getId());
                 Global.setAsset(checklistRestBean.getAsset());
-
-                getChecklist(checklistRestBean.getAsset().getFacSystem());
+recuperaIntervento(checklistRestBean);
+              //  getChecklist(checklistRestBean.getAsset().getFacSystem());
             }
 
             @Override
@@ -91,6 +91,37 @@ public class CheckListSafetyActivity extends Activity {
 
     }
 
+    private void recuperaIntervento(final ChecklistRestBean checklistRestBean) {
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
+        ApiService apiService = retrofit.create(ApiService.class);
+        Single<InterventoRestBean> lista = apiService.getNextIntervento(rfid, "checklist");
+
+        lista.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<InterventoRestBean>() {
+
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onSuccess(InterventoRestBean interventoRestBean) {
+                getChecklist(checklistRestBean.getAsset().getFacSystem());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                if( e instanceof NoSuchElementException){
+
+                    Toast.makeText(CheckListSafetyActivity.this, "Nessun intervento trovato", Toast.LENGTH_LONG).show();
+                 //   Util.showAlert(CheckListSafetyActivity.this, "Nessun intervento trovato");
+                   finish();
+                }
+
+            }
+        });
+    }
 
     private void getChecklist(final String family) {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);

@@ -49,7 +49,7 @@ public interface ApiService {
     Single<List<Asset>> getPreviousInterventiAssets(@Path("date") String date, @Query("interventi") String apiKey );
 
 
-    @Headers("Content-Type: application/json")
+   // @Headers("Content-Type: application/json")
     @POST("intervento/updateIntervento")
     Call<InterventoRestBean> updateIntervento(@Body InterventoRestBean bean);
 

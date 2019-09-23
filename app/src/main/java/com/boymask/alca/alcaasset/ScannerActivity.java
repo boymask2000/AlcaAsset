@@ -78,7 +78,6 @@ public class ScannerActivity extends Activity {
 
     private void startNext(String value) {
         Toast.makeText(ScannerActivity.this, value, Toast.LENGTH_SHORT).show();
-        Log.d("aa", value);
 
         Intent intent = new Intent(ScannerActivity.this, CheckListSafetyActivity.class);
         Bundle b = new Bundle();

@@ -11,11 +11,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.boymask.alca.alcaasset.common.Preferences;
 import com.boymask.alca.alcaasset.common.TimeUtil;
+import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.Asset;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -39,9 +49,9 @@ public class InterventoActivity extends Activity {
         buttonScelta = (Button) findViewById(R.id.buttonScelta);
 
         Bundle b = getIntent().getExtras();
-        long interventoId=0;
+        long interventoId = 0;
         if (b != null)
-            interventoId =  b.getLong("alca.asset.interventoId");
+            interventoId = b.getLong("alca.asset.interventoId");
 
         getInterventi(interventoId);
     }
@@ -65,15 +75,15 @@ public class InterventoActivity extends Activity {
             public void onSuccess(InterventoRestBean interventoRestBean) {
                 if (interventoRestBean == null) {
                     Toast.makeText(getApplicationContext(),
-                            "Nessun intevento previsto", Toast.LENGTH_LONG).show();finish();
+                            "Nessun intevento previsto", Toast.LENGTH_LONG).show();
+                    finish();
                     return;
                 }
 
-              //  InterventoRestBean intervento = lista.get(0);
+                //  InterventoRestBean intervento = lista.get(0);
 
                 showInfo(interventoRestBean);
             }
-
 
 
             @Override
@@ -88,22 +98,22 @@ public class InterventoActivity extends Activity {
         inter.setUser(MainActivity.getUserName());
         TextView dataPianificata = (TextView) findViewById(R.id.dataPianificata);
         dataPianificata.setText(TimeUtil.getFormattedDate(inter.getData_pianificata()));
- 
+
         Button b1 = (Button) findViewById(R.id.button1);
         ColorDrawable buttonColor = (ColorDrawable) b1.getBackground();
         buttonScelta.setBackground(buttonColor);
         inter.setEsito(1);
 
         setButtons(inter);
-        
-        Button nuovoIntervento =  (Button) findViewById(R.id.nuovoIntervento);
+
+        Button nuovoIntervento = (Button) findViewById(R.id.nuovoIntervento);
         nuovoIntervento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nuovoIntervento(inter);
             }
         });
-      //  Button audio = (Button) findViewById(R.id.audio);
+        //  Button audio = (Button) findViewById(R.id.audio);
         final EditText commento = (EditText) findViewById(R.id.commento);
         Button foto = (Button) findViewById(R.id.photo);
         Button esci = (Button) findViewById(R.id.esci);
@@ -113,31 +123,64 @@ public class InterventoActivity extends Activity {
                 finish();
             }
         });
-        setFoto(foto,inter);
+        setFoto(foto, inter);
 
-    //    setAudio(audio,inter);
+        //    setAudio(audio,inter);
 
         Button ok = (Button) findViewById(R.id.ok);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 inter.setCommento(commento.getText().toString());
-                Retrofit retrofit = RetrofitInstance.getRetrofitInstance(InterventoActivity.this);
-                ApiService apiService = retrofit.create(ApiService.class);
 
-                apiService.updateIntervento(inter).enqueue(new Callback<InterventoRestBean>() {
+                updateInterventoInServer(inter);
+            }
+        });
+    }
+
+    private void updateInterventoInServer(InterventoRestBean inter) {
+        //  AndroidNetworking.initialize(getApplicationContext());
+        String baseUrl = Preferences.getBaseUrl(this);
+        AndroidNetworking.post(baseUrl + "intervento/updateIntervento")
+                .addApplicationJsonBody(inter) // posting java object
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
-                    public void onResponse(Call<InterventoRestBean> call, Response<InterventoRestBean> response) {
-                        Log.d("hh", "onresponse");
-                        finish();
+                    public void onResponse(JSONObject response) {
+                        Util.showMessage(InterventoActivity.this,"Dati inviati");
+                        Toast.makeText(InterventoActivity.this, "Dati inviati", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
-                    public void onFailure(Call<InterventoRestBean> call, Throwable t) {
-                        Log.d("hh", "onfail");
-                        finish();
+                    public void onError(ANError error) {
+                        error.printStackTrace();
+                        Util.showAlert(InterventoActivity.this, "Dati non inviati [" + error.getMessage() + "]");
+                        Toast.makeText(InterventoActivity.this, "Dati non inviati", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    private void updateInterventoInServer2(InterventoRestBean inter) {
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance(InterventoActivity.this);
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        apiService.updateIntervento(inter).enqueue(new Callback<InterventoRestBean>() {
+            @Override
+            public void onResponse(Call<InterventoRestBean> call, Response<InterventoRestBean> response) {
+                // Util.showMessage(InterventoActivity.this,"Dati inviati");
+                //  Toast.makeText(InterventoActivity.this, "Dati inviati", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<InterventoRestBean> call, Throwable t) {
+                t.printStackTrace();
+                //   Util.showAlert(InterventoActivity.this,"Dati non inviati ["+t.getMessage()+"]");
+                //  Toast.makeText(InterventoActivity.this, "Dati non inviati", Toast.LENGTH_LONG).show();
+
+                finish();
             }
         });
     }
@@ -150,7 +193,7 @@ public class InterventoActivity extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Intent intent = new Intent(InterventoActivity.this, CameraActivity.class);
+                // Intent intent = new Intent(InterventoActivity.this, CameraActivity.class);
                 Intent intent = new Intent(InterventoActivity.this, AndroidCameraApiActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("InterventoRestBean", inter);
@@ -160,6 +203,7 @@ public class InterventoActivity extends Activity {
             }
         });
     }
+
     private void setAudio(Button b, final InterventoRestBean inter) {
         b.setOnClickListener(new View.OnClickListener() {
             @Override

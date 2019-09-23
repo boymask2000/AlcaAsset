@@ -1,5 +1,6 @@
 package com.boymask.alca.alcaasset.common;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -17,5 +18,21 @@ public class Util {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         String server = (String) prefs.getString("hostname", "");
         return server;
+    }
+    public static void showAlert(Context ctx, String msg) {        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+        builder.setTitle("Attenzione");
+        builder.setMessage(msg);        // add a button
+        builder.setPositiveButton("OK", null);        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    public static void showMessage(Context ctx, String msg) {        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+        builder.setTitle("");
+        builder.setMessage(msg);        // add a button
+        builder.setPositiveButton("OK", null);        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
