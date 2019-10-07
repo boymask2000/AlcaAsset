@@ -19,11 +19,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.boymask.alca.alcaasset.common.Global;
+import com.boymask.alca.alcaasset.common.Messaggio;
+import com.boymask.alca.alcaasset.common.MsgType;
+import com.boymask.alca.alcaasset.common.Preferences;
+import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
 import com.boymask.alca.alcaasset.rest.beans.SafetyChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.SafetyRestBean;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,6 +49,7 @@ public class ScrollingSafetyActivity extends Activity {
 
     private Map<Integer, Boolean> checkMap = new HashMap<>();
     private Button ok;
+    private Button cancel;
     private ListView listview;
     private TextView assetDesc;
     private TextView rpid;
@@ -52,7 +64,8 @@ public class ScrollingSafetyActivity extends Activity {
         listview = (ListView) findViewById(R.id.list);
         assetDesc = (TextView) findViewById(R.id.assetDesc);
         rpid = (TextView) findViewById(R.id.rpid);
-        ok = (Button) findViewById(R.id.button);
+        ok = (Button) findViewById(R.id.ok);
+        cancel = (Button) findViewById(R.id.cancel);
 
         Bundle b = getIntent().getExtras();
         List<ChecklistIntervento> lista = null;
@@ -123,9 +136,46 @@ public class ScrollingSafetyActivity extends Activity {
                 goNext();
             }
         });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                execCancel();
+            }
+        });
 
     }
 
+    private void execCancel() {
+        Messaggio msg = new Messaggio();
+        msg.setUsername(Global.getUser().getUsername());
+        msg.setText("Eseguito CANCEL su checklist sicurezza per intervento su asset "+assetKey);
+        msg.setMsgType(MsgType.WARNING);
+
+        notifyCancelInServer(msg);
+
+        finish();
+    }
+    private void notifyCancelInServer(Messaggio msg) {
+
+        String baseUrl = Preferences.getBaseUrl(this);
+        AndroidNetworking.post(baseUrl + "intervento/cancelOnSafety")
+                .addApplicationJsonBody(msg) // posting java object
+                .setTag("test")
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        error.printStackTrace();
+
+                    }
+                });
+    }
     private void goNext() {
         Intent intent = new Intent(ScrollingSafetyActivity.this, CheckListActivity.class);
         Bundle b = new Bundle();

@@ -33,11 +33,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.UploadProgressListener;
 import com.boymask.alca.alcaasset.common.Beep;
+import com.boymask.alca.alcaasset.common.Preferences;
+import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
 import com.boymask.alca.alcaasset.rest.beans.Utente;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -177,6 +186,8 @@ public class AndroidCameraApiActivity extends AppCompatActivity {
         }
     }
 
+    byte[] byteBuffer;
+
     protected void takePicture() {
         if (null == cameraDevice) {
             Log.e(TAG, "cameraDevice is null");
@@ -205,16 +216,19 @@ public class AndroidCameraApiActivity extends AppCompatActivity {
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-            final File file = new File(Environment.getExternalStorageDirectory() + "/pic.jpg");
+            // final File file = new File(Environment.getExternalStorageDirectory() + "/pic.jpg");
+            final File file = new File(AndroidCameraApiActivity.this.getFilesDir() + "/pic.jpg");
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
                     Image image = null;
                     try {
+                        Log.e(TAG, "onImageAvailable");
                         image = reader.acquireLatestImage();
                         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
                         byte[] bytes = new byte[buffer.capacity()];
                         buffer.get(bytes);
+                        byteBuffer = bytes;
                         save(bytes);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -228,6 +242,7 @@ public class AndroidCameraApiActivity extends AppCompatActivity {
                 }
 
                 private void save(byte[] bytes) throws IOException {
+                    byteBuffer = bytes;
                     OutputStream output = null;
                     try {
                         output = new FileOutputStream(file);
@@ -245,7 +260,7 @@ public class AndroidCameraApiActivity extends AppCompatActivity {
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
                     Toast.makeText(AndroidCameraApiActivity.this, "Saved fie2:" + file, Toast.LENGTH_SHORT).show();
-                    invia(file);
+                    inviaFast(file);//DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
                     createCameraPreview();
                 }
             };
@@ -268,6 +283,41 @@ public class AndroidCameraApiActivity extends AppCompatActivity {
         }
     }
 
+    private void inviaByte(final File pictureFile) {
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/gif"), byteBuffer);
+
+
+        //    MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", pictureFile.getName(), RequestBody.create(MediaType.parse("image/*"), pictureFile));
+        Beep.playCameraClick(this);
+        Call<Utente> call = apiService.uploadFileBytes(reqFile, interventoId);
+        call.enqueue(new Callback<Utente>() {
+
+
+            @Override
+            public void onResponse(Call<Utente> call, retrofit2.Response<Utente> response) {
+                Toast.makeText(AndroidCameraApiActivity.this, "" + "Ok", Toast.LENGTH_LONG).show();
+                Log.d("d", "response");
+                pictureFile.delete();
+                //    closeCamera();
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<Utente> call, Throwable t) {
+                Toast.makeText(AndroidCameraApiActivity.this, "" + "Ok", Toast.LENGTH_LONG).show();
+                Log.d("d", "fail");
+                pictureFile.delete();
+                t.printStackTrace();
+                //     closeCamera();
+                finish();
+            }
+        });
+
+    }
+
     private void invia(final File pictureFile) {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
         ApiService apiService = retrofit.create(ApiService.class);
@@ -281,23 +331,54 @@ public class AndroidCameraApiActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Utente> call, retrofit2.Response<Utente> response) {
                 Toast.makeText(AndroidCameraApiActivity.this, "" + "Ok", Toast.LENGTH_LONG).show();
-                Log.d("d", "response");
+
                 pictureFile.delete();
-            //    closeCamera();
+                //    closeCamera();
                 finish();
             }
 
             @Override
             public void onFailure(Call<Utente> call, Throwable t) {
-                Toast.makeText(AndroidCameraApiActivity.this, "" + "Ok", Toast.LENGTH_LONG).show();
-                Log.d("d", "fail");
+                Toast.makeText(AndroidCameraApiActivity.this, "" + "Fail", Toast.LENGTH_LONG).show();
+
                 pictureFile.delete();
                 t.printStackTrace();
-           //     closeCamera();
+                //     closeCamera();
                 finish();
             }
         });
 
+    }
+
+    public void inviaFast(final File pictureFile) {
+        String url = Preferences.getBaseUrl(this) + "upload/uploadAttachment";
+        AndroidNetworking.upload(url)
+                .addMultipartFile("file", pictureFile)
+                .setTag("uploadTest")
+                .addQueryParameter("id", "" + interventoId)
+                .setPriority(Priority.IMMEDIATE)
+                .build()
+                .setUploadProgressListener(new UploadProgressListener() {
+                    @Override
+                    public void onProgress(long bytesUploaded, long totalBytes) {
+                        Log.d("IMAGE", "Bytes " + bytesUploaded + " " + totalBytes);
+                        if (bytesUploaded == totalBytes)
+                            Util.showAlert(AndroidCameraApiActivity.this, "Image sent");
+                    }
+                })
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        pictureFile.delete();
+
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        Log.d("ERR", "err: " + error.getErrorBody());
+                    }
+                });
     }
 
     protected void createCameraPreview() {

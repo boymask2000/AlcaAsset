@@ -10,8 +10,7 @@
         android:id="@+id/rpid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-       />
+        android:layout_centerHorizontal="true"/>
     <TextView
         android:id="@+id/mainText1"
         android:layout_width="wrap_content"
@@ -37,23 +36,33 @@
             android:id="@+id/list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-
             android:layout_marginBottom="30dp"
             android:background="#aaaaaa"
             android:layout_weight="5"
             android:focusable="false" />
 
+           <LinearLayout
 
-        <Button
-            android:id="@+id/button"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
+               android:layout_weight="1"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/mainText"
+               android:orientation="horizontal">
 
-            android:layout_height="wrap_content"
-            android:layout_below="@id/list"
+               <Button
+                   android:id="@+id/cancel"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Cancel" />
 
-            android:text="Ok" />
+                <Button
+                   android:id="@+id/ok"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Ok" />
+
+            </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import com.boymask.alca.alcaasset.rest.beans.Utente;
 import java.util.List;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -59,6 +60,11 @@ public interface ApiService {
     @Multipart
     @POST("upload/uploadAttachment")
     Call<Utente> uploadFile(@Part MultipartBody.Part filePart,@Query("id") long id);
+
+    @Multipart
+    @POST("upload/uploadAttachment")
+    Call<Utente> uploadFileBytes(@Body RequestBody filePart, @Query("id") long id);
+
 
     @Multipart
     @POST("upload/uploadAudio")

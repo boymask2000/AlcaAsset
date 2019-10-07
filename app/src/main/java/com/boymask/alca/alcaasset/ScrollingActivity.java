@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boymask.alca.alcaasset.rest.beans.Asset;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
@@ -35,9 +36,11 @@ public class ScrollingActivity extends AppCompatActivity {
 
     private Map<Integer, Boolean> checkMap = new HashMap<>();
     private Button ok;
+    private Button viewPdf;
     private ListView listview;
     private TextView assetDesc;
     private String language;
+    private String rmpId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +53,15 @@ public class ScrollingActivity extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.list);
         assetDesc = (TextView) findViewById(R.id.assetDesc);
         ok = (Button) findViewById(R.id.button);
+        viewPdf = (Button) findViewById(R.id.viewpdf);
 
         Bundle b = getIntent().getExtras();
         List<ChecklistIntervento> lista = null;
         InterventoRestBean irb = null;
         ChecklistRestBean crb = (ChecklistRestBean) b.getSerializable("ChecklistRestBean");
-String id = crb.getAssetId();
-        assetDesc.setText(id);
+
+        rmpId = crb.getAssetId();
+        assetDesc.setText(rmpId);
         next(crb.getLista(), crb.getInterventoId());
 
 
@@ -121,6 +126,17 @@ String id = crb.getAssetId();
                 b.putSerializable("alca.asset.interventoId", id);
                 intent.putExtras(b);
                 startActivityForResult(intent, 1);
+            }
+        });
+
+        viewPdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ScrollingActivity.this, ViewSchedaFamigliaActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("assetRMPID", rmpId);
+                intent.putExtras(b);
+                startActivity(intent);
             }
         });
 

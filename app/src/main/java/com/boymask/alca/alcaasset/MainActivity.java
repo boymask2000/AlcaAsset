@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -22,11 +23,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.ConnectionQuality;
+import com.androidnetworking.gsonparserfactory.GsonParserFactory;
+import com.androidnetworking.interfaces.ConnectionQualityChangeListener;
+import com.boymask.alca.alcaasset.common.Global;
 import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.network.NetworkUtil;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.Utente;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -66,8 +73,7 @@ Log.e("NETWORK", "Res");
         setContentView(R.layout.activity_main);
         showVersion();
 
-        AndroidNetworking.initialize(getApplicationContext());
-
+        initNetworking();
 
         initRetrofit();
 
@@ -110,7 +116,7 @@ Log.e("NETWORK", "Res");
 
                         @Override
                         public void onSuccess(Utente u) {
-
+Global.setUser(u);
                             if (u.getUsername() != null) {
                                 Intent intent = new Intent(MainActivity.this, ToDoActivity.class);
                                 startActivity(intent);
@@ -136,14 +142,44 @@ Log.e("NETWORK", "Res");
                 }
             }
         });
+    }
+ /*   private FusedLocationProviderClient fusedLocationClient;
 
-      /* b2.setOnClickListener(new View.OnClickListener() {
+
+    private void setGeograpy() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+                        }
+                    }
+                });
+
+    }*/
+
+    private void initNetworking() {
+        AndroidNetworking.initialize(getApplicationContext());
+
+
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        AndroidNetworking.setParserFactory(new GsonParserFactory(gson));
+
+        //Non FUNZA
+        AndroidNetworking.setConnectionQualityChangeListener(new ConnectionQualityChangeListener() {
             @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, TakePhotoActivity.class);
-                startActivity(i);
+            public void onChange(ConnectionQuality currentConnectionQuality, int currentBandwidth) {
+                Log.e("NEt", currentConnectionQuality.toString());
             }
-        });*/
+        });
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

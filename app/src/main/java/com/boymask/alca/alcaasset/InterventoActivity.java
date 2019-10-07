@@ -151,6 +151,7 @@ public class InterventoActivity extends Activity {
                     public void onResponse(JSONObject response) {
                         Util.showMessage(InterventoActivity.this,"Dati inviati");
                         Toast.makeText(InterventoActivity.this, "Dati inviati", Toast.LENGTH_LONG).show();
+                        finish();
                     }
 
                     @Override
@@ -204,19 +205,7 @@ public class InterventoActivity extends Activity {
         });
     }
 
-    private void setAudio(Button b, final InterventoRestBean inter) {
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(InterventoActivity.this, AudioRecordActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("InterventoRestBean", inter);
-                intent.putExtras(b);
-                startActivity(intent);
 
-            }
-        });
-    }
 
     private void nuovoIntervento(InterventoRestBean inter) {
         Intent intent = new Intent(InterventoActivity.this, RichiestaNuovoInterventoActivity.class);

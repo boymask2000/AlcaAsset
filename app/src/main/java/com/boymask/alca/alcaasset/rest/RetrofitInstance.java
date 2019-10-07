@@ -3,8 +3,7 @@ package com.boymask.alca.alcaasset.rest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
-import com.boymask.alca.alcaasset.MainActivity;
+import android.widget.Toast;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -21,7 +20,8 @@ public class RetrofitInstance {
     public static Retrofit getRetrofitInstance(Context ctx) {
         String url;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-        String server = (String) prefs.getString("hostname", "");
+        String server = prefs.getString("hostname", "");
+
         if (server != null && server.trim().length() > 0)
             url = protocol + "://" + server + ":" + port + "/" + base;
         else

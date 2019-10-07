@@ -48,6 +48,7 @@ public class ToDoActivity extends AppCompatActivity {
     private EditText dataintervento;
     private TextView numprev;
     private ListView listview;
+   // private Button locations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class ToDoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_to_do);
 
         ok = (Button) findViewById(R.id.ok);
+     //   locations = (Button) findViewById(R.id.locations);
         dataintervento = (EditText) findViewById(R.id.dataintervento);
         numprev = (TextView) findViewById(R.id.numprev);
         listview = (ListView) findViewById(R.id.list);
@@ -181,6 +183,14 @@ public class ToDoActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+/*
+        locations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ToDoActivity.this, LocationSelectionActivity.class);
+                startActivity(intent);
+            }
+        })*/;
     }
     public class CustomList extends ArrayAdapter<Asset> {
         private final Activity context;

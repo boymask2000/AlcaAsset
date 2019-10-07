@@ -6,14 +6,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class Preferences {
-    public static String getHostname(Activity act) {
+  /*  public static String getHostname(Activity act) {
         return getParameter("hostname", act);
-    }
+    }*/
 
-    public static String getParameter(String key, Context ctx) {
+/*    public static String getParameter(String key, Context ctx) {
         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(ctx);
         return SP.getString(key, "NA");
-    }
+    }*/
 
     public static String getBaseUrl(Context ctx) {
         String url;
@@ -29,6 +29,12 @@ public class Preferences {
         else
             url = BASE_URL;
 
+        return url;
+    }
+    public static String getBaseUrlNoRest(Context ctx){
+        String url=getBaseUrl(ctx);
+        int pos=url.lastIndexOf("/rest/");
+        if( pos!=-1)return url.substring(0,pos+1);
         return url;
     }
 }

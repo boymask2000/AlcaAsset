@@ -85,6 +85,15 @@
             android:layout_weight="1"
 
             android:text="Ok" />
+<!--        <Button
+            android:id="@+id/locations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/ok"
+            android:layout_weight="1"
+
+            android:text="Locations" />-->
     </LinearLayout>
 
 </RelativeLayout>
