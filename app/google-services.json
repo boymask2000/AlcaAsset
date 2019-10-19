@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "366256062876",
+    "firebase_url": "https://alca-asset.firebaseio.com",
+    "project_id": "alca-asset",
+    "storage_bucket": "alca-asset.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:366256062876:android:2e6cabdf7822cb87704859",
+        "android_client_info": {
+          "package_name": "com.boymask.alca.alcaasset"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "366256062876-fvso3nedp1qnlpoj59diu8vofjqtqqnn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb9SWQc84KWnvQeN4KSslkXN2DHRABC4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "366256062876-fvso3nedp1qnlpoj59diu8vofjqtqqnn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

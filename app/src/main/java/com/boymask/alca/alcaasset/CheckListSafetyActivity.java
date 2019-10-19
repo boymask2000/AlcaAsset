@@ -3,19 +3,29 @@ package com.boymask.alca.alcaasset;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.boymask.alca.alcaasset.common.Global;
+import com.boymask.alca.alcaasset.common.Preferences;
 import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
-import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
+import com.boymask.alca.alcaasset.rest.beans.InterventiRealTimeHelper;
+import com.boymask.alca.alcaasset.rest.beans.InterventoRealTime;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
 import com.boymask.alca.alcaasset.rest.beans.SafetyChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.SafetyRestBean;
+
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.List;
@@ -73,6 +83,8 @@ public class CheckListSafetyActivity extends Activity {
                     return;
                 }
                 Global.setAsset(checklistRestBean.getAsset());
+
+
 recuperaIntervento(checklistRestBean);
               //  getChecklist(checklistRestBean.getAsset().getFacSystem());
             }
@@ -91,37 +103,31 @@ recuperaIntervento(checklistRestBean);
 
     }
 
+
+
     private void recuperaIntervento(final ChecklistRestBean checklistRestBean) {
-        Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
-        ApiService apiService = retrofit.create(ApiService.class);
-        Single<InterventoRestBean> lista = apiService.getNextIntervento(rfid, "checklist");
+        String baseUrl = Preferences.getBaseUrl(this);
+        AndroidNetworking.get(baseUrl+"intervento/getnext/{rfid}")
+                .addPathParameter("rfid", rfid)
+                .setTag(this)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsObject(InterventoRestBean.class, new ParsedRequestListener<InterventoRestBean>() {
+                    @Override
+                    public void onResponse(InterventoRestBean interventoRestBean) {
+                        // do anything with response
+                        Log.d("WW", "id : " + interventoRestBean.getId());
+                        getChecklist(checklistRestBean.getAsset().getFacSystem());
+                        InterventiRealTimeHelper.notificaInizioIntervento(interventoRestBean, CheckListSafetyActivity.this);
 
-        lista.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<InterventoRestBean>() {
+                    }
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d("ERR", anError.toString());
+                    }
+                }); }
 
-            @Override
-            public void onSubscribe(Disposable d) {
 
-            }
-
-            @Override
-            public void onSuccess(InterventoRestBean interventoRestBean) {
-                getChecklist(checklistRestBean.getAsset().getFacSystem());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-                if( e instanceof NoSuchElementException){
-
-                    Toast.makeText(CheckListSafetyActivity.this, "Nessun intervento trovato", Toast.LENGTH_LONG).show();
-                 //   Util.showAlert(CheckListSafetyActivity.this, "Nessun intervento trovato");
-                   finish();
-                }
-
-            }
-        });
-    }
 
     private void getChecklist(final String family) {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);

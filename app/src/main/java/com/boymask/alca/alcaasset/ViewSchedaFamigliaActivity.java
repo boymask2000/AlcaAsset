@@ -132,7 +132,7 @@ public class ViewSchedaFamigliaActivity extends Activity {
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(
-                Uri.parse(baseUrl),//"file://" + getFilesDir() + "/filename.pdf"),
+                Uri.parse(baseUrl),
                 "application/pdf");
 
         startActivity(intent);

@@ -54,7 +54,8 @@
         <activity android:name=".CheckListSafetyActivity" />
         <activity android:name=".ScrollingSafetyActivity" />
         <activity android:name=".ScannerActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

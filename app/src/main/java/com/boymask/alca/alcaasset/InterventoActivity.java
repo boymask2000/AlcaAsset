@@ -22,6 +22,7 @@ import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.Asset;
+import com.boymask.alca.alcaasset.rest.beans.InterventiRealTimeHelper;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
 
 import org.json.JSONArray;
@@ -39,7 +40,7 @@ import retrofit2.Retrofit;
 
 public class InterventoActivity extends Activity {
 
-    private Asset asset;
+   // private Asset asset;
     private Button buttonScelta;
 
     @Override
@@ -134,6 +135,8 @@ public class InterventoActivity extends Activity {
                 inter.setCommento(commento.getText().toString());
 
                 updateInterventoInServer(inter);
+
+                InterventiRealTimeHelper.notificaFineIntervento(inter, InterventoActivity.this);
             }
         });
     }
@@ -186,15 +189,11 @@ public class InterventoActivity extends Activity {
         });
     }
 
-    private void setCommento(Button b, InterventoRestBean inter) {
-
-    }
-
     private void setFoto(Button b, final InterventoRestBean inter) {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Intent intent = new Intent(InterventoActivity.this, CameraActivity.class);
+
                 Intent intent = new Intent(InterventoActivity.this, AndroidCameraApiActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("InterventoRestBean", inter);

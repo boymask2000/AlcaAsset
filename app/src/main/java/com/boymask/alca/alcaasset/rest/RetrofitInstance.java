@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.boymask.alca.alcaasset.MainActivity;
+import com.boymask.alca.alcaasset.common.Util;
+
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -19,21 +22,21 @@ public class RetrofitInstance {
 
     public static Retrofit getRetrofitInstance(Context ctx) {
         String url;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-        String server = prefs.getString("hostname", "");
+   //     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        String server = Util.getServer(ctx);
 
         if (server != null && server.trim().length() > 0)
             url = protocol + "://" + server + ":" + port + "/" + base;
         else
             url = BASE_URL;
 
-        if (retrofit == null) {
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(url)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
-        }
+
         return retrofit;
     }
 }

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
@@ -18,22 +17,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.boymask.alca.alcaasset.common.Global;
 import com.boymask.alca.alcaasset.common.TimeUtil;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.Asset;
-import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
-import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
-import com.boymask.alca.alcaasset.rest.beans.SafetyRestBean;
 
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -42,7 +33,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
-public class ToDoActivity extends AppCompatActivity {
+public class ToDoActivity extends Activity {
 
     private Button ok;
     private EditText dataintervento;
@@ -124,7 +115,7 @@ public class ToDoActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(List<Asset> as) {
-                Log.d("LL", ""+as.size());
+
                 final ToDoActivity.CustomList adapter = new ToDoActivity.CustomList(ToDoActivity.this,
                         as);
                 listview.setAdapter(adapter);

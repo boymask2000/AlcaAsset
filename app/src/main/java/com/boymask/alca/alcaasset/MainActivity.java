@@ -1,18 +1,10 @@
 package com.boymask.alca.alcaasset;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,10 +14,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.ConnectionQuality;
 import com.androidnetworking.gsonparserfactory.GsonParserFactory;
-import com.androidnetworking.interfaces.ConnectionQualityChangeListener;
 import com.boymask.alca.alcaasset.common.Global;
 import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.network.NetworkUtil;
@@ -43,9 +38,10 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
-    private Button b1, b2;
+    private Button b1;
     private EditText userText, passText;
     private TextView server;
+    private TextView netstat;
 
     private static String userName;
 
@@ -53,18 +49,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         server.setText(Util.getServer(this));
-        Log.e("NETWORK", "Post");
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-Log.e("NETWORK", "Res");
-     //  NetworkUtil.initNetworkMonitor(this);
+        NetworkUtil.setNetworkMonitor(this, netstat);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
-        Log.e("NETWORK", "Pause");
+        NetworkUtil.removeNetworkMonitor();
     }
 
     @Override
@@ -80,26 +76,39 @@ Log.e("NETWORK", "Res");
         b1 = (Button) findViewById(R.id.button);
         userText = (EditText) findViewById(R.id.editText);
         passText = (EditText) findViewById(R.id.editText2);
-        server = (TextView) findViewById(R.id.server);
+        server = findViewById(R.id.server);
+        netstat = findViewById(R.id.netstat);
         server.setText(Util.getServer(this));
 
-        b2 = (Button) findViewById(R.id.button2);
+        //   b2 = (Button) findViewById(R.id.button2);
+
+        setListenerB1();
 
 
+    }
+
+    private void setListenerB1() {
+        b1.setOnClickListener(null);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Toast.makeText(getApplicationContext(),
-                        "Redirecting..."+Util.getServer(MainActivity.this), Toast.LENGTH_SHORT).show();
 
                 // create an instance of the ApiService
                 Retrofit retrofit;
                 retrofit = RetrofitInstance.getRetrofitInstance(MainActivity.this);
                 ApiService apiService = retrofit.create(ApiService.class);
 
-                 userName = userText.getText().toString();
+                userName = userText.getText().toString();
                 String password = passText.getText().toString();
+
+                if (userName == null || userName.trim().length() == 0) {
+                    Util.showAlert(MainActivity.this, "Inserire utente");
+                    return;
+                }
+                if (password == null || password.trim().length() == 0) {
+                    Util.showAlert(MainActivity.this, "Inserire password");
+                    return;
+                }
 
                 if (userName.equalsIgnoreCase("pippo")) {
                     Intent intent = new Intent(MainActivity.this, ScannerActivity.class);
@@ -116,25 +125,24 @@ Log.e("NETWORK", "Res");
 
                         @Override
                         public void onSuccess(Utente u) {
-Global.setUser(u);
+                            Global.setUser(u);
                             if (u.getUsername() != null) {
                                 Intent intent = new Intent(MainActivity.this, ToDoActivity.class);
                                 startActivity(intent);
 
                             } else {
-                                Util.showAlert(MainActivity.this,"Credenzali errate");
-                                Toast.makeText(getApplicationContext(),
-                                        "Credenzali errate", Toast.LENGTH_LONG).show();
+                                Util.showAlert(MainActivity.this, "Credenzali errate");
+
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
 
-                            if( e instanceof java.net.ConnectException){
+                            if (e instanceof java.net.ConnectException) {
 
                                 Util.showAlert(MainActivity.this,
-                                        "Impossibile connettersi al server "+Util.getServer(MainActivity.this));
+                                        "Impossibile connettersi al server " + Util.getServer(MainActivity.this));
 
                             }
                         }
@@ -143,43 +151,15 @@ Global.setUser(u);
             }
         });
     }
- /*   private FusedLocationProviderClient fusedLocationClient;
-
-
-    private void setGeograpy() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
-                        }
-                    }
-                });
-
-    }*/
 
     private void initNetworking() {
         AndroidNetworking.initialize(getApplicationContext());
-
 
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
 
         AndroidNetworking.setParserFactory(new GsonParserFactory(gson));
-
-        //Non FUNZA
-        AndroidNetworking.setConnectionQualityChangeListener(new ConnectionQualityChangeListener() {
-            @Override
-            public void onChange(ConnectionQuality currentConnectionQuality, int currentBandwidth) {
-                Log.e("NEt", currentConnectionQuality.toString());
-            }
-        });
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -191,73 +171,90 @@ Global.setUser(u);
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
+
         switch (item.getItemId()) {
             case R.id.about:
 
                 return true;
             case R.id.setServer:
                 Intent i = new Intent(MainActivity.this, AssetPreferencesActivity.class);
-                startActivity(i);
+                startActivityForResult(i, 1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private int MY_CAMERA_REQUEST_CODE = 100;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-    private void initRetrofit() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.INTERNET}, MY_CAMERA_REQUEST_CODE);
-            Toast.makeText(getApplicationContext(),
-                    "No Internet", Toast.LENGTH_LONG).show();
-            return;
+        if (requestCode == 1) {
+
+            setListenerB1();
         }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_CAMERA_REQUEST_CODE);
-            Toast.makeText(getApplicationContext(),
-                    "No WRITE_EXTERNAL_STORAGE", Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
-            Toast.makeText(getApplicationContext(),
-                    "No Camera", Toast.LENGTH_LONG).show();
-            return;
-        } else
-            Toast.makeText(getApplicationContext(),
-                    "Camera OK", Toast.LENGTH_LONG).show();
-
-
     }
 
+    private final int MY_CAMERA_REQUEST_CODE = 100;
+    private final int MY_INTERNET_REQUEST_CODE = 101;
+    private final int MY_EXT_STORAGE_REQUEST_CODE = 102;
+    private final int PERMISSION_ALL = 103;
+
+    private void initRetrofit() {
+        String[] permissions = {Manifest.permission.INTERNET,Manifest.permission.CAMERA};
+
+        boolean ok=true;
+        for (String permission : permissions) {
+            if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                ok= false;
+            }
+        }
+        if( !ok)
+        {
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_ALL);
+        }
+    }
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == MY_CAMERA_REQUEST_CODE) {
+        switch( requestCode){
+            case PERMISSION_ALL:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, " permissions granted", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(this, " permissions denied", Toast.LENGTH_LONG).show();
 
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                break;
+            case MY_CAMERA_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
 
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
-
-            } else {
-
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
-
-            }
-
+                break;
+            case MY_INTERNET_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "internet permission granted", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(this, "internet permission denied", Toast.LENGTH_LONG).show();
+                break;
+   /*         case MY_EXT_STORAGE_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "storage permission granted", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(this, "storage permission denied", Toast.LENGTH_LONG).show();
+                break;*/
         }
+
+
     }
+
     public static String getUserName() {
         return userName;
     }
 
-    private void showVersion(){
+    private void showVersion() {
         PackageInfo pInfo = null;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);

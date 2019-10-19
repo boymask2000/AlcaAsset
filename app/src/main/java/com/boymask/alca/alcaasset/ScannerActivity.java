@@ -3,8 +3,8 @@ package com.boymask.alca.alcaasset;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
+import androidx.annotation.NonNull;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,6 +62,7 @@ public class ScannerActivity extends Activity {
                 if (value.equals("0")) value = "8436010153238";
                 Toast.makeText(getApplicationContext(),
                         "Redirecting...", Toast.LENGTH_SHORT).show();
+
                 startNext(value);
             }
         });

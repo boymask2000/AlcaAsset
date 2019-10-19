@@ -1,7 +1,7 @@
 package com.boymask.alca.alcaasset;
 
 import android.app.DatePickerDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +10,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.boymask.alca.alcaasset.common.TimeUtil;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;

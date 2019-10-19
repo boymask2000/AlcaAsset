@@ -6,8 +6,7 @@
     android:paddingLeft="16dp"
     android:paddingTop="16dp"
     android:paddingRight="16dp"
-    android:paddingBottom="16dp"
-    >
+    android:paddingBottom="16dp">
 
     <TextView
         android:id="@+id/textview"
@@ -26,10 +25,11 @@
         android:layout_below="@id/textview"
         android:gravity="center_horizontal"
         android:orientation="vertical">
+
         <Space
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-         />
+            android:layout_height="0dp" />
+
         <EditText
             android:id="@+id/editText"
             android:layout_width="wrap_content"
@@ -52,39 +52,47 @@
 
             android:inputType="textPassword"
             android:textColorHint="#ffff299f" />
+
         <Space
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            />
+            android:layout_height="20dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Server" />
+
         <TextView
             android:id="@+id/server"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="" />
+
         <TextView
             android:id="@+id/appversion"
-            android:paddingTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
             android:text="" />
     </LinearLayout>
 
 
-
     <Button
         android:id="@+id/button"
-        android:layout_below="@id/lay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/lay"
 
         android:layout_centerInParent="true"
 
         android:text="login" />
 
-
-
+    <TextView
+        android:id="@+id/netstat"
+        android:layout_below="@id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:layout_centerInParent="true"
+        android:text="" />
 </RelativeLayout>

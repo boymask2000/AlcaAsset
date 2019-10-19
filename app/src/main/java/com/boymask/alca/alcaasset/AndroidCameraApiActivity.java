@@ -18,12 +18,11 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -34,6 +33,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.ConnectionQuality;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
@@ -351,6 +351,8 @@ public class AndroidCameraApiActivity extends AppCompatActivity {
     }
 
     public void inviaFast(final File pictureFile) {
+        Beep.playCameraClick(this);
+
         String url = Preferences.getBaseUrl(this) + "upload/uploadAttachment";
         AndroidNetworking.upload(url)
                 .addMultipartFile("file", pictureFile)
@@ -380,6 +382,7 @@ public class AndroidCameraApiActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     protected void createCameraPreview() {
         try {

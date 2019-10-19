@@ -2,11 +2,10 @@ package com.boymask.alca.alcaasset;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -27,9 +25,7 @@ import com.boymask.alca.alcaasset.common.Global;
 import com.boymask.alca.alcaasset.common.Messaggio;
 import com.boymask.alca.alcaasset.common.MsgType;
 import com.boymask.alca.alcaasset.common.Preferences;
-import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
-import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
 import com.boymask.alca.alcaasset.rest.beans.SafetyChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.SafetyRestBean;
