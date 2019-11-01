@@ -120,8 +120,10 @@ Log.d("lll", e.getMessage());
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
+
+                Util.showAlert(getApplicationContext(), "Errore server "+e.getMessage());
                 if( e instanceof NoSuchElementException){
-                    Util.showAlert(getApplicationContext(), "Nessun intervento trovato");
+                 //   Util.showAlert(getApplicationContext(), "Errore server ");
                     finish();
                 }
 

@@ -59,13 +59,7 @@
 
                 android:text="Ok" />
 
-            <Button
-                android:id="@+id/viewpdf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
 
-
-                android:text="Scheda" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

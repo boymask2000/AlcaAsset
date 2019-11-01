@@ -126,12 +126,12 @@ public class ScrollingSafetyActivity extends Activity {
             }
         });
 
-        ok.setOnClickListener(new View.OnClickListener() {
+/*        ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goNext();
             }
-        });
+        });*/
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +139,16 @@ public class ScrollingSafetyActivity extends Activity {
             }
         });
 
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ScrollingSafetyActivity.this, ViewSchedaFamigliaActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("assetRMPID", assetKey);
+                intent.putExtras(b);
+                startActivityForResult(intent, 2);
+            }
+        });
     }
 
     private void execCancel() {
@@ -172,6 +182,7 @@ public class ScrollingSafetyActivity extends Activity {
                     }
                 });
     }
+
     private void goNext() {
         Intent intent = new Intent(ScrollingSafetyActivity.this, CheckListActivity.class);
         Bundle b = new Bundle();
@@ -181,12 +192,15 @@ public class ScrollingSafetyActivity extends Activity {
         startActivityForResult(intent, 1);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if (requestCode == 1) {
+        if (requestCode == 1)
+        {
             finish();
         }
+        if( requestCode==2)goNext();
     }
 
 

@@ -3,8 +3,10 @@ package com.boymask.alca.alcaasset;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +37,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
     private Map<Integer, Boolean> checkMap = new HashMap<>();
     private Button ok;
-    private Button viewPdf;
+    //   private Button viewPdf;
     private ListView listview;
     private TextView assetDesc;
     private String language;
@@ -52,7 +54,7 @@ public class ScrollingActivity extends AppCompatActivity {
         listview = (ListView) findViewById(R.id.list);
         assetDesc = (TextView) findViewById(R.id.assetDesc);
         ok = (Button) findViewById(R.id.button);
-        viewPdf = (Button) findViewById(R.id.viewpdf);
+        //  viewPdf = (Button) findViewById(R.id.viewpdf);
 
         Bundle b = getIntent().getExtras();
         List<ChecklistIntervento> lista = null;
@@ -71,7 +73,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
         if (checks.size() == 0) {
             Toast.makeText(getApplicationContext(),
-                    "Nessun intevento previsto", Toast.LENGTH_LONG).show();
+                    "Checklist vuota. Id intervento=" + id, Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -128,7 +130,7 @@ public class ScrollingActivity extends AppCompatActivity {
             }
         });
 
-        viewPdf.setOnClickListener(new View.OnClickListener() {
+    /*    viewPdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ScrollingActivity.this, ViewSchedaFamigliaActivity.class);
@@ -137,7 +139,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 intent.putExtras(b);
                 startActivity(intent);
             }
-        });
+        });*/
 
     }
 
@@ -187,12 +189,13 @@ public class ScrollingActivity extends AppCompatActivity {
         public View getView(int position, View view, ViewGroup parent) {
             LayoutInflater inflater = context.getLayoutInflater();
             View rowView = inflater.inflate(R.layout.row_layout, null, true);
-            TextView txtTitle = (TextView) rowView.findViewById(R.id.txt);
+            TextView txt_it = (TextView) rowView.findViewById(R.id.txt_it);
+            TextView txt_en = (TextView) rowView.findViewById(R.id.txt_en);
 
-            if (language.equals("en"))
-                txtTitle.setText("" + lista.get(position).getDescriptionUS());
-            else
-                txtTitle.setText("" + lista.get(position).getDescription());
+
+            txt_en.setText("" + lista.get(position).getDescriptionUS());
+
+            txt_it.setText("" + lista.get(position).getDescription());
 
             return rowView;
         }
