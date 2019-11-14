@@ -113,8 +113,7 @@ public class CheckListSafetyActivity extends Activity {
                 .getAsObject(InterventoRestBean.class, new ParsedRequestListener<InterventoRestBean>() {
                     @Override
                     public void onResponse(InterventoRestBean interventoRestBean) {
-                        // do anything with response
-                        Log.d("WW", "id : " + interventoRestBean.getId());
+
                         getChecklist(checklistRestBean.getAsset().getFacSystem());
                         InterventiRealTimeHelper.notificaInizioIntervento(interventoRestBean, CheckListSafetyActivity.this);
 
@@ -122,7 +121,9 @@ public class CheckListSafetyActivity extends Activity {
 
                     @Override
                     public void onError(ANError anError) {
+
                         Log.d("ERR", anError.toString());
+                   finish();
                     }
                 });
     }

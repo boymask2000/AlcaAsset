@@ -135,7 +135,13 @@ public class ViewSchedaFamigliaActivity extends Activity {
                 Uri.parse(baseUrl),
                 "application/pdf");
 
-        startActivity(intent);
+        startActivityForResult(intent,4);
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 4) {
+            finish();
+        }
+    }
 }

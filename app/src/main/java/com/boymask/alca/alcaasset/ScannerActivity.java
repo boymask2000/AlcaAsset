@@ -3,8 +3,10 @@ package com.boymask.alca.alcaasset;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,12 +60,15 @@ public class ScannerActivity extends Activity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("SCANNER", "CHIAMO SCANNER");
                 String value = textCodice.getText().toString();
                 if (value.equals("0")) value = "8436010153238";
-                Toast.makeText(getApplicationContext(),
-                        "Redirecting...", Toast.LENGTH_SHORT).show();
+                if (value.trim().length() > 0) {
+                    Toast.makeText(getApplicationContext(),
+                            "Redirecting...", Toast.LENGTH_SHORT).show();
 
-                startNext(value);
+                    startNext(value);
+                }
             }
         });
     }
@@ -79,14 +84,21 @@ public class ScannerActivity extends Activity {
 
     private void startNext(String value) {
         Toast.makeText(ScannerActivity.this, value, Toast.LENGTH_SHORT).show();
-
+        final EditText textCodice = findViewById(R.id.codiceAsset);
+        textCodice.setText("");
         Intent intent = new Intent(ScannerActivity.this, CheckListSafetyActivity.class);
         Bundle b = new Bundle();
         b.putString("assetKey", value);
         intent.putExtras(b);
-        startActivity(intent);
+        startActivityForResult(intent,1);
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 1) {
+            finish();
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();

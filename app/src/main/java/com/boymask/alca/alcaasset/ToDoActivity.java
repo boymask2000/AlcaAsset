@@ -36,6 +36,7 @@ import retrofit2.Retrofit;
 public class ToDoActivity extends Activity {
 
     private Button ok;
+    private Button esci;
     private EditText dataintervento;
     private TextView numprev;
     private ListView listview;
@@ -47,12 +48,13 @@ public class ToDoActivity extends Activity {
         setContentView(R.layout.activity_to_do);
 
         ok = (Button) findViewById(R.id.ok);
+        esci = (Button) findViewById(R.id.esci);
      //   locations = (Button) findViewById(R.id.locations);
         dataintervento = (EditText) findViewById(R.id.dataintervento);
         numprev = (TextView) findViewById(R.id.numprev);
         listview = (ListView) findViewById(R.id.list);
 
-        setOk();
+        setButtons();
         setDataintervento();
     }
 
@@ -165,13 +167,19 @@ public class ToDoActivity extends Activity {
         });
     }
 
-    private void setOk() {
+    private void setButtons() {
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ToDoActivity.this, ScannerActivity.class);
                 startActivity(intent);
+            }
+        });
+        esci.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 /*

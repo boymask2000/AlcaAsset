@@ -3,6 +3,7 @@ package com.boymask.alca.alcaasset;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -154,13 +155,14 @@ public class ScrollingSafetyActivity extends Activity {
     private void execCancel() {
         Messaggio msg = new Messaggio();
         msg.setUsername(Global.getUser().getUsername());
-        msg.setText("Eseguito CANCEL su checklist sicurezza per intervento su asset "+assetKey);
+        msg.setText("Eseguito CANCEL su checklist sicurezza per intervento su asset " + assetKey);
         msg.setMsgType(MsgType.WARNING);
 
         notifyCancelInServer(msg);
 
         finish();
     }
+
     private void notifyCancelInServer(Messaggio msg) {
 
         String baseUrl = Preferences.getBaseUrl(this);
@@ -172,13 +174,13 @@ public class ScrollingSafetyActivity extends Activity {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-
+                        finish();
                     }
 
                     @Override
                     public void onError(ANError error) {
                         error.printStackTrace();
-
+                        finish();
                     }
                 });
     }
@@ -196,11 +198,10 @@ public class ScrollingSafetyActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if (requestCode == 1)
-        {
+        if (requestCode == 1) {
             finish();
         }
-        if( requestCode==2)goNext();
+        if (requestCode == 2) goNext();
     }
 
 

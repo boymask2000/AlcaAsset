@@ -37,7 +37,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewSchedaFamigliaActivity"></activity>
+
+        <activity android:name=".ViewSchedaFamigliaActivity" />
         <activity android:name=".LocationSelectionActivity" />
         <activity android:name=".ToDoActivity" />
         <activity android:name=".TakePhotoActivity" />
@@ -54,7 +55,8 @@
         <activity android:name=".CheckListSafetyActivity" />
         <activity android:name=".ScrollingSafetyActivity" />
         <activity android:name=".ScannerActivity" />
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

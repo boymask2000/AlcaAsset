@@ -31,11 +31,12 @@
             android:focusable="false"
             android:inputType="date" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/prev"
-        android:layout_below="@id/mainText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/mainText"
 
 
         android:orientation="horizontal">
@@ -53,8 +54,7 @@
         <TextView
             android:id="@+id/numprev"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-         />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 
@@ -75,25 +75,28 @@
             android:background="#aaaaaa"
             android:focusable="false" />
 
-
-        <Button
-            android:id="@+id/ok"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_weight="1"
+            android:layout_gravity="center"
             android:layout_below="@id/list"
-            android:layout_weight="1"
+            android:orientation="horizontal">
 
-            android:text="Ok" />
-<!--        <Button
-            android:id="@+id/locations"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-            android:layout_below="@id/ok"
-            android:layout_weight="1"
+                android:text="Ok" />
+            <Button
+                android:id="@+id/esci"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-            android:text="Locations" />-->
+                android:text="Esci" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>
