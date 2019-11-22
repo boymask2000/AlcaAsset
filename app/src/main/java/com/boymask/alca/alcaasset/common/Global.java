@@ -4,7 +4,7 @@ import com.boymask.alca.alcaasset.rest.beans.Asset;
 import com.boymask.alca.alcaasset.rest.beans.Utente;
 
 public class Global {
-    public static Asset getAsset() {
+    public  static Asset getAsset() {
         return asset;
     }
 
@@ -18,11 +18,11 @@ public class Global {
     private static Utente user;
 
     public static void setUser(Utente u) {
-        user = u;
+
+        Global.user = u;
     }
 
     public static Utente getUser() {
         return user;
     }
-
 }

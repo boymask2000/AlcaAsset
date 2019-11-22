@@ -40,8 +40,10 @@ import retrofit2.Retrofit;
 
 public class InterventoActivity extends Activity {
 
-   // private Asset asset;
     private Button buttonScelta;
+    private InterventoRestBean inter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +82,7 @@ public class InterventoActivity extends Activity {
                     finish();
                     return;
                 }
-
-                //  InterventoRestBean intervento = lista.get(0);
-
+                
                 showInfo(interventoRestBean);
             }
 
@@ -96,6 +96,7 @@ public class InterventoActivity extends Activity {
     }
 
     private void showInfo(final InterventoRestBean inter) {
+        this.inter=inter;
         inter.setUser(MainActivity.getUserName());
         TextView dataPianificata = (TextView) findViewById(R.id.dataPianificata);
         dataPianificata.setText(TimeUtil.getFormattedDate(inter.getData_pianificata()));
@@ -105,7 +106,7 @@ public class InterventoActivity extends Activity {
         buttonScelta.setBackground(buttonColor);
         inter.setEsito(1);
 
-        setButtons(inter);
+        setButtons();
 
         Button nuovoIntervento = (Button) findViewById(R.id.nuovoIntervento);
         nuovoIntervento.setOnClickListener(new View.OnClickListener() {
@@ -134,9 +135,14 @@ public class InterventoActivity extends Activity {
             public void onClick(View v) {
                 inter.setCommento(commento.getText().toString());
 
+                if( inter.getEsito()!=1 && commento.getText().toString().trim().length()==0){
+                    Util.showAlert(InterventoActivity.this, "Inserire un commento per l'esito non positivo");
+                    return;
+                }
+
                 updateInterventoInServer(inter);
 
-                InterventiRealTimeHelper.notificaFineIntervento(inter, InterventoActivity.this);
+
             }
         });
     }
@@ -214,7 +220,7 @@ public class InterventoActivity extends Activity {
         startActivity(intent);
     }
 
-    private void setButtons(final InterventoRestBean inter) {
+    private void setButtons() {
         final Button b1 = (Button) findViewById(R.id.button1);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,6 +229,7 @@ public class InterventoActivity extends Activity {
                 buttonScelta.setBackground(buttonColor);
 
                 inter.setEsito(1);
+                CheckListSafetyActivity.getInterventoRestBean().setEsito(inter.getEsito());
             }
         });
         final Button b2 = (Button) findViewById(R.id.button2);
@@ -232,7 +239,7 @@ public class InterventoActivity extends Activity {
                 ColorDrawable buttonColor = (ColorDrawable) b2.getBackground();
                 buttonScelta.setBackground(buttonColor);
 
-                inter.setEsito(2);
+                inter.setEsito(2);CheckListSafetyActivity.getInterventoRestBean().setEsito(inter.getEsito());
             }
         });
         final Button b3 = (Button) findViewById(R.id.button3);
@@ -242,7 +249,7 @@ public class InterventoActivity extends Activity {
                 ColorDrawable buttonColor = (ColorDrawable) b3.getBackground();
                 buttonScelta.setBackground(buttonColor);
 
-                inter.setEsito(3);
+                inter.setEsito(3);CheckListSafetyActivity.getInterventoRestBean().setEsito(inter.getEsito());
             }
         });
         final Button b4 = (Button) findViewById(R.id.button4);
@@ -252,7 +259,7 @@ public class InterventoActivity extends Activity {
                 ColorDrawable buttonColor = (ColorDrawable) b4.getBackground();
                 buttonScelta.setBackground(buttonColor);
 
-                inter.setEsito(4);
+                inter.setEsito(4);CheckListSafetyActivity.getInterventoRestBean().setEsito(inter.getEsito());
             }
         });
         final Button b5 = (Button) findViewById(R.id.button5);
@@ -262,7 +269,7 @@ public class InterventoActivity extends Activity {
                 ColorDrawable buttonColor = (ColorDrawable) b5.getBackground();
                 buttonScelta.setBackground(buttonColor);
 
-                inter.setEsito(5);
+                inter.setEsito(5);CheckListSafetyActivity.getInterventoRestBean().setEsito(inter.getEsito());
             }
         });
         final Button b6 = (Button) findViewById(R.id.button6);
@@ -272,7 +279,7 @@ public class InterventoActivity extends Activity {
                 ColorDrawable buttonColor = (ColorDrawable) b6.getBackground();
                 buttonScelta.setBackground(buttonColor);
 
-                inter.setEsito(6);
+                inter.setEsito(6);CheckListSafetyActivity.getInterventoRestBean().setEsito(inter.getEsito());
             }
         });
         final Button b7 = (Button) findViewById(R.id.button7);
@@ -282,7 +289,7 @@ public class InterventoActivity extends Activity {
                 ColorDrawable buttonColor = (ColorDrawable) b7.getBackground();
                 buttonScelta.setBackground(buttonColor);
 
-                inter.setEsito(7);
+                inter.setEsito(7);CheckListSafetyActivity.getInterventoRestBean().setEsito(inter.getEsito());
             }
         });
         final Button b8 = (Button) findViewById(R.id.button8);
@@ -292,7 +299,7 @@ public class InterventoActivity extends Activity {
                 ColorDrawable buttonColor = (ColorDrawable) b8.getBackground();
                 buttonScelta.setBackground(buttonColor);
 
-                inter.setEsito(8);
+                inter.setEsito(8);CheckListSafetyActivity.getInterventoRestBean().setEsito(inter.getEsito());
             }
         });
         final Button b9 = (Button) findViewById(R.id.button9);
@@ -302,7 +309,7 @@ public class InterventoActivity extends Activity {
                 ColorDrawable buttonColor = (ColorDrawable) b9.getBackground();
                 buttonScelta.setBackground(buttonColor);
 
-                inter.setEsito(9);
+                inter.setEsito(9);CheckListSafetyActivity.getInterventoRestBean().setEsito(inter.getEsito());
             }
         });
     }

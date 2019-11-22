@@ -3,34 +3,25 @@ package com.boymask.alca.alcaasset;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.boymask.alca.alcaasset.common.Global;
 import com.boymask.alca.alcaasset.common.Preferences;
-import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.InterventiRealTimeHelper;
-import com.boymask.alca.alcaasset.rest.beans.InterventoRealTime;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
 import com.boymask.alca.alcaasset.rest.beans.SafetyChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.SafetyRestBean;
 
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -43,10 +34,17 @@ public class CheckListSafetyActivity extends Activity {
 
     private String rfid;
 
+    public static InterventoRestBean getInterventoRestBean() {
+        return interventoRestBean;
+    }
+
+    private static InterventoRestBean interventoRestBean;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_list);
+        interventoRestBean = null;
 
 
         Bundle b = getIntent().getExtras();
@@ -57,6 +55,13 @@ public class CheckListSafetyActivity extends Activity {
         recuperaAsset();
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (interventoRestBean != null)
+            InterventiRealTimeHelper.notificaFineIntervento(interventoRestBean, CheckListSafetyActivity.this);
     }
 
     private void recuperaAsset() {
@@ -115,15 +120,16 @@ public class CheckListSafetyActivity extends Activity {
                     public void onResponse(InterventoRestBean interventoRestBean) {
 
                         getChecklist(checklistRestBean.getAsset().getFacSystem());
-                        InterventiRealTimeHelper.notificaInizioIntervento(interventoRestBean, CheckListSafetyActivity.this);
 
+                        InterventiRealTimeHelper.notificaInizioIntervento(interventoRestBean, CheckListSafetyActivity.this);
+                        CheckListSafetyActivity.this.interventoRestBean = interventoRestBean;
                     }
 
                     @Override
                     public void onError(ANError anError) {
 
                         Log.d("ERR", anError.toString());
-                   finish();
+                        finish();
                     }
                 });
     }
@@ -165,8 +171,17 @@ public class CheckListSafetyActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         // Check which request we're responding to
         if (requestCode == 1) {
+
+
+            String activityResult = data.getStringExtra("key");
+            if( activityResult.equals("SEC")){
+                Log.d("yy", "m");
+                interventoRestBean.setEsito(10);
+            }
+
             finish();
         }
     }

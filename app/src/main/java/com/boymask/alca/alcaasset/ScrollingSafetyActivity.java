@@ -3,20 +3,18 @@ package com.boymask.alca.alcaasset;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -33,6 +31,7 @@ import com.boymask.alca.alcaasset.rest.beans.SafetyRestBean;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -52,6 +51,8 @@ public class ScrollingSafetyActivity extends Activity {
     private TextView rpid;
     private String assetKey;
     private String family;
+    private List<String> notCompliantSafety = new ArrayList<>();
+    private String activityResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,9 +87,6 @@ public class ScrollingSafetyActivity extends Activity {
             return;
         }
 
-
-        //    assetDesc.setText(asset.getNomenclature());
-
         buildCheckMap(checks.size());
 
         final CustomList adapter = new CustomList(this,
@@ -98,8 +96,9 @@ public class ScrollingSafetyActivity extends Activity {
 
         listview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        updateOk();
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    //    updateOk(null);
+
+/*        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int itemIndex, long l) {
                 // Get user selected item.
@@ -121,18 +120,10 @@ public class ScrollingSafetyActivity extends Activity {
                     updateOk();
                     //   Log.d("dd", "si");
                 }
-
-
-                //Toast.makeText(getApplicationContext(), "select item text : " + itemDto.getItemText(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-/*        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goNext();
             }
         });*/
+
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,14 +144,32 @@ public class ScrollingSafetyActivity extends Activity {
     }
 
     private void execCancel() {
+
         Messaggio msg = new Messaggio();
         msg.setUsername(Global.getUser().getUsername());
-        msg.setText("Eseguito CANCEL su checklist sicurezza per intervento su asset " + assetKey);
+
         msg.setMsgType(MsgType.WARNING);
+
+        String msgText = "Eseguito CANCEL su checklist sicurezza per intervento su asset " + assetKey;
+        String compTxt = getTextFromNotCompList();
+        if (compTxt.length() > 0)
+            msgText += ": " + compTxt;
+
+        msg.setText(msgText);
+
 
         notifyCancelInServer(msg);
 
-        finish();
+        termina();
+    }
+
+    private String getTextFromNotCompList() {
+        String out = "";
+        for (String s : notCompliantSafety) {
+            if (out.length() > 0) out += ", ";
+            out += s;
+        }
+        return out;
     }
 
     private void notifyCancelInServer(Messaggio msg) {
@@ -180,7 +189,7 @@ public class ScrollingSafetyActivity extends Activity {
                     @Override
                     public void onError(ANError error) {
                         error.printStackTrace();
-                        finish();
+                        termina();
                     }
                 });
     }
@@ -199,15 +208,37 @@ public class ScrollingSafetyActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == 1) {
-            finish();
+            termina();
         }
         if (requestCode == 2) goNext();
     }
+    private void termina(){
+        Intent intent = getIntent();
+        intent.putExtra("key", activityResult);
+        setResult(1, intent);
+
+        finish();
+    }
 
 
-    private void updateOk() {
+    private void updateOk(List<SafetyRestBean> lista) {
+        notCompliantSafety.clear();
         boolean out = true;
         Set<Map.Entry<Integer, Boolean>> entryset = checkMap.entrySet();
+
+        if (lista != null) {
+            Iterator<Map.Entry<Integer, Boolean>> iter1 = entryset.iterator();
+            while (iter1.hasNext()) {
+                Map.Entry<Integer, Boolean> e = iter1.next();
+                if (!e.getValue()) {
+                    Integer key = e.getKey();
+                    String msg = lista.get(key).getRisk_en() + " - " + lista.get(key).getPpe_en();
+                    notCompliantSafety.add(msg);
+                }
+            }
+        }
+
+
         Iterator<Map.Entry<Integer, Boolean>> iter = entryset.iterator();
         while (iter.hasNext()) {
             Map.Entry<Integer, Boolean> e = iter.next();
@@ -215,8 +246,12 @@ public class ScrollingSafetyActivity extends Activity {
                 out = false;
                 break;
             }
+            Integer key = e.getKey();
+
 
         }
+        if( out)activityResult="";
+        else activityResult="SEC";
         ok.setEnabled(out);
     }
 
@@ -236,10 +271,12 @@ public class ScrollingSafetyActivity extends Activity {
             this.context = context;
             this.lista = lista;
 
+            updateOk(lista);
+
         }
 
         @Override
-        public View getView(int position, View view, ViewGroup parent) {
+        public View getView(final int position, View view, ViewGroup parent) {
             LayoutInflater inflater = context.getLayoutInflater();
             View rowView = inflater.inflate(R.layout.safety_row_layout, null, true);
             TextView riskTitle = (TextView) rowView.findViewById(R.id.risk);
@@ -251,6 +288,39 @@ public class ScrollingSafetyActivity extends Activity {
             int resourceId = getResource(position);
             if (resourceId > 0)
                 imageV.setImageResource(resourceId);
+
+            final CheckBox checkYes = (CheckBox) rowView.findViewById(R.id.checkbox_yes);
+            final CheckBox checkNo = (CheckBox) rowView.findViewById(R.id.checkbox_no);
+
+
+            checkYes.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        checkNo.setChecked(false);
+                        checkMap.put(position, true);
+
+                    } else {
+                        checkNo.setChecked(true);
+                        checkMap.put(position, false);
+                    }
+                    updateOk(lista);
+                }
+            });
+            checkNo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        checkYes.setChecked(false);
+                        checkMap.put(position, false);
+                    } else {
+                        checkYes.setChecked(true);
+                        checkMap.put(position, true);
+                    }
+                    updateOk(lista);
+                }
+            });
+
 
             return rowView;
         }

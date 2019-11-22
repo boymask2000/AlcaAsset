@@ -80,12 +80,8 @@ public class ViewSchedaFamigliaActivity extends Activity {
                 .getAsObject(Famiglia.class, new ParsedRequestListener<Famiglia>() {
                     @Override
                     public void onResponse(Famiglia fam) {
-                        /* do anything with response */
-                        Log.d("fam", "id : " + fam.getId());
-                        Log.d("fam", "famiglia : " + fam.getFamiglia());
 
                         getFilePDF(fam.getId());
-
                     }
 
                     @Override
@@ -119,7 +115,9 @@ public class ViewSchedaFamigliaActivity extends Activity {
 
                     @Override
                     public void onError(ANError anError) {
+
                         Log.d("ERR", "" + anError);
+                        finish();
                     }
 
 
