@@ -9,7 +9,8 @@
     <string name="problemi_di_collegamento">Unable to connect to server server</string>
     <string name="asset_non_trovato">Asset not found</string>
     <string name="barcode">Bar Code</string>
-    <string name="confirmcheck">Confirm these steps by clicking the checkbox next each row:</string>
+    <string name="confirmsafetycheck">Do you confirm that you are compliant with the following safety rules ?</string>
+    <string name="confirmopcheck">Please confirm that you have completed these operations</string>
     <string name="checklist_sicurezza">Security Checklist:</string>
     <string name="data_pianificata">Planned date:</string>
     <string name="selezionare_esito_intervento">Select intervention outcome:</string>

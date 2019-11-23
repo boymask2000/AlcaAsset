@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boymask.alca.alcaasset.common.GlobalInfo;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
@@ -21,6 +22,7 @@ import com.google.zxing.Result;
 public class ScannerActivity extends Activity {
 
     private CodeScanner mCodeScanner;
+    private GlobalInfo info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,9 @@ public class ScannerActivity extends Activity {
 
 
         setContentView(R.layout.activity_scanner);
+
+        Bundle b = getIntent().getExtras();
+        info= (GlobalInfo) b.getSerializable("info");
 
         final EditText textCodice = findViewById(R.id.codiceAsset);
         final TextView full = findViewById(R.id.full);
@@ -89,6 +94,9 @@ public class ScannerActivity extends Activity {
         Intent intent = new Intent(ScannerActivity.this, CheckListSafetyActivity.class);
         Bundle b = new Bundle();
         b.putString("assetKey", value);
+     //   intent.putExtras(b);
+
+        b.putSerializable("info", info);
         intent.putExtras(b);
         startActivityForResult(intent,1);
     }

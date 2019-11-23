@@ -1,22 +1,21 @@
 package com.boymask.alca.alcaasset.rest.beans;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.boymask.alca.alcaasset.common.Global;
+import com.boymask.alca.alcaasset.common.GlobalInfo;
 import com.boymask.alca.alcaasset.common.Preferences;
 
 import org.json.JSONObject;
 
 public class InterventiRealTimeHelper {
-    public static void notificaInizioIntervento(InterventoRestBean interventoRestBean, Context ctx) {
+    public static void notificaInizioIntervento(GlobalInfo info,InterventoRestBean interventoRestBean, Context ctx) {
         InterventoRealTime irt = new InterventoRealTime();
-        irt.setUser(Global.getUser().getUsername());
-        irt.setAssetRMP(Global.getAsset().getRpieIdIndividual());
+        irt.setUser(info.getUser().getUsername());
+        irt.setAssetRMP(info.getAsset().getRpieIdIndividual());
         irt.setInterventoid(interventoRestBean.getId());
         irt.setEsito(0);
         irt.setStato("STARTED");
@@ -42,10 +41,10 @@ public class InterventiRealTimeHelper {
                 });
     }
 
-    public static void notificaFineIntervento(InterventoRestBean inter, Context ctx) {
+    public static void notificaFineIntervento(GlobalInfo info, InterventoRestBean inter, Context ctx) {
         InterventoRealTime irt = new InterventoRealTime();
-        irt.setUser(Global.getUser().getUsername());
-        irt.setAssetRMP(Global.getAsset().getRpieIdIndividual());
+        irt.setUser(info.getUser().getUsername());
+        irt.setAssetRMP(info.getAsset().getRpieIdIndividual());
         irt.setInterventoid(inter.getId());
         irt.setEsito(inter.getEsito());
         irt.setStato("COMPLETED");

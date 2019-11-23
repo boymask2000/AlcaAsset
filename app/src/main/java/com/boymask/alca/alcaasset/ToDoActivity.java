@@ -18,11 +18,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.boymask.alca.alcaasset.common.GlobalInfo;
 import com.boymask.alca.alcaasset.common.TimeUtil;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
 import com.boymask.alca.alcaasset.rest.beans.Asset;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -40,7 +42,9 @@ public class ToDoActivity extends Activity {
     private EditText dataintervento;
     private TextView numprev;
     private ListView listview;
-   // private Button locations;
+
+    private GlobalInfo info;
+    // private Button locations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +53,13 @@ public class ToDoActivity extends Activity {
 
         ok = (Button) findViewById(R.id.ok);
         esci = (Button) findViewById(R.id.esci);
-     //   locations = (Button) findViewById(R.id.locations);
+        //   locations = (Button) findViewById(R.id.locations);
         dataintervento = (EditText) findViewById(R.id.dataintervento);
         numprev = (TextView) findViewById(R.id.numprev);
         listview = (ListView) findViewById(R.id.list);
+
+        Bundle b = getIntent().getExtras();
+        info= (GlobalInfo) b.getSerializable("info");
 
         setButtons();
         setDataintervento();
@@ -101,6 +108,7 @@ public class ToDoActivity extends Activity {
 
 
     }
+
     private void getPreviousAssets(String canonicData) {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
         ApiService apiService = retrofit.create(ApiService.class);
@@ -159,7 +167,7 @@ public class ToDoActivity extends Activity {
             @Override
             public void onError(Throwable e) {
                 Log.d("lll", e.getMessage());
-                if( e instanceof java.net.ConnectException){
+                if (e instanceof java.net.ConnectException) {
                     //     Util.showMessage(findViewById(R.id.button), R.string.problemi_di_collegamento);
 
                 }
@@ -173,6 +181,12 @@ public class ToDoActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ToDoActivity.this, ScannerActivity.class);
+
+
+                Bundle b = new Bundle();
+                b.putSerializable("info", info);
+                intent.putExtras(b);
+
                 startActivity(intent);
             }
         });
@@ -189,8 +203,10 @@ public class ToDoActivity extends Activity {
                 Intent intent = new Intent(ToDoActivity.this, LocationSelectionActivity.class);
                 startActivity(intent);
             }
-        })*/;
+        })*/
+        ;
     }
+
     public class CustomList extends ArrayAdapter<Asset> {
         private final Activity context;
 
@@ -200,19 +216,46 @@ public class ToDoActivity extends Activity {
                           List<Asset> lista) {
             super(context, R.layout.row_layout, lista);
             this.context = context;
-            this.lista = lista;
+            //   this.lista = lista;
+
+            String prevFam = "";
+            List<Asset> ll = new ArrayList<>();
+            for (Asset as : lista) {
+
+                if (!as.getFacSystem().equals(prevFam)) {
+                    prevFam = as.getFacSystem();
+                    Asset temp = new Asset();
+                    temp.setFacSystem(as.getFacSystem());
+                    ll.add(temp);
+
+                }
+                ll.add(as);
+            }
+            this.lista = ll;
 
         }
 
         @Override
         public View getView(int position, View view, ViewGroup parent) {
             LayoutInflater inflater = context.getLayoutInflater();
-            View rowView = inflater.inflate(R.layout.todo_row_layout, null, true);
-            TextView idTitle = (TextView) rowView.findViewById(R.id.id);
-            TextView familyTitle = (TextView) rowView.findViewById(R.id.family);
 
-            idTitle.setText(""+lista.get(position).getRpieIdIndividual());
-            familyTitle.setText(""+lista.get(position).getFacSubsystem());
+
+            View rowView = null;
+
+            if (lista.get(position).getRpieIdIndividual() == null) {
+                rowView = inflater.inflate(R.layout.todo_famigliaheader, null, true);
+                TextView fam = (TextView) rowView.findViewById(R.id.family);
+                fam.setText(lista.get(position).getFacSystem());
+            } else {
+
+
+                rowView = inflater.inflate(R.layout.todo_row_layout, null, true);
+                TextView idTitle = (TextView) rowView.findViewById(R.id.id);
+                TextView familyTitle = (TextView) rowView.findViewById(R.id.family);
+
+                idTitle.setText("" + lista.get(position).getRpieIdIndividual());
+                familyTitle.setText("" + lista.get(position).getFacSubsystem());
+            }
 
             return rowView;
         }

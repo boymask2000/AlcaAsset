@@ -8,8 +8,8 @@ android {
         applicationId "com.boymask.alca.alcaasset"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 29
-        versionName "1.28"
+        versionCode 31
+        versionName "1.30"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

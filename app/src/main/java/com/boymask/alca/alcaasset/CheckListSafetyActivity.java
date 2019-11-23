@@ -10,7 +10,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
-import com.boymask.alca.alcaasset.common.Global;
+import com.boymask.alca.alcaasset.common.GlobalInfo;
 import com.boymask.alca.alcaasset.common.Preferences;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
@@ -33,6 +33,7 @@ import retrofit2.Retrofit;
 public class CheckListSafetyActivity extends Activity {
 
     private String rfid;
+    private GlobalInfo info;
 
     public static InterventoRestBean getInterventoRestBean() {
         return interventoRestBean;
@@ -49,8 +50,12 @@ public class CheckListSafetyActivity extends Activity {
 
         Bundle b = getIntent().getExtras();
         rfid = null; // or other values
-        if (b != null)
+        if (b != null) {
             rfid = b.getString("assetKey");
+
+            //  Bundle b = getIntent().getExtras();
+            info = (GlobalInfo) b.getSerializable("info");
+        }
 
         recuperaAsset();
 
@@ -61,7 +66,7 @@ public class CheckListSafetyActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         if (interventoRestBean != null)
-            InterventiRealTimeHelper.notificaFineIntervento(interventoRestBean, CheckListSafetyActivity.this);
+            InterventiRealTimeHelper.notificaFineIntervento(info, interventoRestBean, CheckListSafetyActivity.this);
     }
 
     private void recuperaAsset() {
@@ -88,7 +93,7 @@ public class CheckListSafetyActivity extends Activity {
                     finish();
                     return;
                 }
-                Global.setAsset(checklistRestBean.getAsset());
+                info.setAsset(checklistRestBean.getAsset());
 
                 recuperaIntervento(checklistRestBean);
             }
@@ -119,10 +124,12 @@ public class CheckListSafetyActivity extends Activity {
                     @Override
                     public void onResponse(InterventoRestBean interventoRestBean) {
 
-                        getChecklist(checklistRestBean.getAsset().getFacSystem());
 
-                        InterventiRealTimeHelper.notificaInizioIntervento(interventoRestBean, CheckListSafetyActivity.this);
+
+                        InterventiRealTimeHelper.notificaInizioIntervento(info, interventoRestBean, CheckListSafetyActivity.this);
                         CheckListSafetyActivity.this.interventoRestBean = interventoRestBean;
+
+                        getChecklist(checklistRestBean.getAsset().getFacSystem());
                     }
 
                     @Override
@@ -158,6 +165,7 @@ public class CheckListSafetyActivity extends Activity {
                 Bundle b = new Bundle();
                 b.putSerializable("SafetyChecklistRestBean", (Serializable) crb);
                 b.putString("rfid", rfid);
+                b.putSerializable("info", info);
                 intent.putExtras(b);
                 startActivityForResult(intent, 1);
             }
@@ -177,7 +185,7 @@ public class CheckListSafetyActivity extends Activity {
 
 
             String activityResult = data.getStringExtra("key");
-            if( activityResult.equals("SEC")){
+            if (activityResult.equals("SEC")) {
                 Log.d("yy", "m");
                 interventoRestBean.setEsito(10);
             }

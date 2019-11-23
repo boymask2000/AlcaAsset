@@ -17,11 +17,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.gsonparserfactory.GsonParserFactory;
-import com.boymask.alca.alcaasset.common.Global;
+import com.boymask.alca.alcaasset.common.GlobalInfo;
 import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.network.NetworkUtil;
 import com.boymask.alca.alcaasset.rest.ApiService;
@@ -125,9 +124,14 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(Utente u) {
-                            Global.setUser(u);
+                            GlobalInfo info = new GlobalInfo();
+                            info.setUser(u);
+                      //      Global.setUser(u);
                             if (u.getUsername() != null) {
                                 Intent intent = new Intent(MainActivity.this, ToDoActivity.class);
+                                Bundle b = new Bundle();
+                                b.putSerializable("info", info);
+                                intent.putExtras(b);
                                 startActivity(intent);
 
                             } else {

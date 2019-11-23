@@ -20,7 +20,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.boymask.alca.alcaasset.common.Global;
+import com.boymask.alca.alcaasset.common.GlobalInfo;
 import com.boymask.alca.alcaasset.common.Messaggio;
 import com.boymask.alca.alcaasset.common.MsgType;
 import com.boymask.alca.alcaasset.common.Preferences;
@@ -53,6 +53,7 @@ public class ScrollingSafetyActivity extends Activity {
     private String family;
     private List<String> notCompliantSafety = new ArrayList<>();
     private String activityResult;
+    private GlobalInfo info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class ScrollingSafetyActivity extends Activity {
         InterventoRestBean irb = null;
         SafetyChecklistRestBean crb = (SafetyChecklistRestBean) b.getSerializable("SafetyChecklistRestBean");
         assetKey = b.getString("rfid");
+        info=(GlobalInfo)b.getSerializable("info");
         rpid.setText(assetKey);
         family = crb.getFamily();
         next(crb.getLista());
@@ -146,7 +148,7 @@ public class ScrollingSafetyActivity extends Activity {
     private void execCancel() {
 
         Messaggio msg = new Messaggio();
-        msg.setUsername(Global.getUser().getUsername());
+        msg.setUsername(info.getUser().getUsername());
 
         msg.setMsgType(MsgType.WARNING);
 

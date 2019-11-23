@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.boymask.alca.alcaasset.common.Global;
 import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
@@ -49,7 +47,7 @@ public class CheckListActivity extends Activity {
     private void recuperaAsset() {
         recuperaIntervento();
     }
-    private void recuperaAsset1() {
+/*    private void recuperaAsset1() {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
         ApiService apiService = retrofit.create(ApiService.class);
         Single<ChecklistRestBean> sing = apiService.getChecklist(rfid, "checklist");
@@ -69,13 +67,13 @@ public class CheckListActivity extends Activity {
 
                     Toast.makeText(getApplicationContext(),
                             R.string.asset_non_trovato, Toast.LENGTH_LONG).show();
-                    /*Util.showMessage(findViewById(R.id.coordinatorLayout), R.string.asset_non_trovato);
+                    *//*Util.showMessage(findViewById(R.id.coordinatorLayout), R.string.asset_non_trovato);
 
                     try {
                         Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }*/
+                    }*//*
                     finish();
                     return;
                 }
@@ -95,7 +93,7 @@ Log.d("lll", e.getMessage());
             }
         });
 
-    }
+    }*/
 
     private void recuperaIntervento() {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
