@@ -30,7 +30,7 @@
             android:id="@+id/txt_en"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#95bac9"
+            android:background="@android:color/holo_orange_light"
             android:padding="10dp"
             android:textSize="18sp"
             android:textStyle="bold" />

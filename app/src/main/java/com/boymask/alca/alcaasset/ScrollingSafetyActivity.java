@@ -71,7 +71,7 @@ public class ScrollingSafetyActivity extends Activity {
         InterventoRestBean irb = null;
         SafetyChecklistRestBean crb = (SafetyChecklistRestBean) b.getSerializable("SafetyChecklistRestBean");
         assetKey = b.getString("rfid");
-        info=(GlobalInfo)b.getSerializable("info");
+        info = (GlobalInfo) b.getSerializable("info");
         rpid.setText(assetKey);
         family = crb.getFamily();
         next(crb.getLista());
@@ -98,7 +98,7 @@ public class ScrollingSafetyActivity extends Activity {
 
         listview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-    //    updateOk(null);
+        //    updateOk(null);
 
 /*        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -138,7 +138,7 @@ public class ScrollingSafetyActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(ScrollingSafetyActivity.this, ViewSchedaFamigliaActivity.class);
                 Bundle b = new Bundle();
-                b.putSerializable("assetRMPID", assetKey);
+                b.putSerializable("info", info);
                 intent.putExtras(b);
                 startActivityForResult(intent, 2);
             }
@@ -201,6 +201,7 @@ public class ScrollingSafetyActivity extends Activity {
         Bundle b = new Bundle();
         b.putString("assetKey", assetKey);
         b.putString("family", family);
+        b.putSerializable("info", info);
         intent.putExtras(b);
         startActivityForResult(intent, 1);
     }
@@ -214,7 +215,8 @@ public class ScrollingSafetyActivity extends Activity {
         }
         if (requestCode == 2) goNext();
     }
-    private void termina(){
+
+    private void termina() {
         Intent intent = getIntent();
         intent.putExtra("key", activityResult);
         setResult(1, intent);
@@ -252,8 +254,8 @@ public class ScrollingSafetyActivity extends Activity {
 
 
         }
-        if( out)activityResult="";
-        else activityResult="SEC";
+        if (out) activityResult = "";
+        else activityResult = "SEC";
         ok.setEnabled(out);
     }
 

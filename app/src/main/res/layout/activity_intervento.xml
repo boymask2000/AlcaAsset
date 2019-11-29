@@ -5,31 +5,56 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:paddingLeft="16dp"
-    android:paddingTop="16dp"
+    android:paddingTop="5dp"
     android:paddingRight="16dp"
-    android:paddingBottom="16dp"
-    >
+    android:paddingBottom="16dp">
 
-    <TextView
-        android:id="@+id/mainText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/data_pianificata" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/dataPianificata"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/family"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/rmpie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/ll1"
+        android:orientation="horizontal">
 
-        android:layout_centerHorizontal="true"
-        android:text="" />
+        <TextView
+            android:id="@+id/mainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/data_pianificata" />
+
+        <TextView
+            android:id="@+id/dataPianificata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+
+            android:layout_centerHorizontal="true"
+            android:text="" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/sel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/dataPianificata"
+        android:layout_below="@id/ll2"
         android:gravity="center_horizontal"
         android:text="@string/selezionare_esito_intervento" />
 
@@ -41,6 +66,7 @@
         android:layout_below="@id/sel"
         android:gravity="center_horizontal"
         android:text="ICAP RATING CHART" />
+
     <TextView
         android:id="@+id/icap2"
         android:layout_width="fill_parent"
@@ -62,10 +88,12 @@
 
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
+
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
+
             <Button
                 android:id="@+id/button1"
 
@@ -98,6 +126,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="#E2EFDA" />
+
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -107,17 +136,19 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
+
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
+
             <Button
                 android:id="@+id/button4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
 
                 android:background="#BF8F00" />
 
@@ -125,9 +156,9 @@
                 android:id="@+id/button5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
 
                 android:background="#FFD966" />
 
@@ -135,11 +166,12 @@
                 android:id="@+id/button6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
 
                 android:background="#FFF2CC" />
+
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -149,17 +181,19 @@
         <TableRow
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
+
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
+
             <Button
                 android:id="@+id/button7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
 
                 android:background="#EB0000" />
 
@@ -167,9 +201,9 @@
                 android:id="@+id/button8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
 
                 android:background="#FF4F4F" />
 
@@ -177,11 +211,12 @@
                 android:id="@+id/button9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
 
                 android:background="#FFC1C1" />
+
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -239,17 +274,19 @@
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/cm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/insert_commento" />
+
         <EditText
             android:id="@+id/commento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
             android:background="@drawable/edittextstyle"
+            android:inputType="textMultiLine"
             android:lines="2"
             android:maxLines="4"
             android:minLines="2"

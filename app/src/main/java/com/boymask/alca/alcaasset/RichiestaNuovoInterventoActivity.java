@@ -101,6 +101,7 @@ public class RichiestaNuovoInterventoActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<InterventoRestBean> call, Throwable t) {
                         Log.d("hh", "onfail");
+                        t.printStackTrace();
                         finish();
                     }
                 });

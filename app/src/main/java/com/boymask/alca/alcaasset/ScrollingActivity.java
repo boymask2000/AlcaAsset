@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boymask.alca.alcaasset.common.GlobalInfo;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistIntervento;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
@@ -42,6 +43,7 @@ public class ScrollingActivity extends AppCompatActivity {
     private TextView assetDesc;
     private String language;
     private String rmpId;
+    private GlobalInfo info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class ScrollingActivity extends AppCompatActivity {
         List<ChecklistIntervento> lista = null;
         InterventoRestBean irb = null;
         ChecklistRestBean crb = (ChecklistRestBean) b.getSerializable("ChecklistRestBean");
+        info = (GlobalInfo) b.getSerializable("info");
 
         rmpId = crb.getAssetId();
         assetDesc.setText(rmpId);
@@ -125,6 +128,7 @@ public class ScrollingActivity extends AppCompatActivity {
                 Intent intent = new Intent(ScrollingActivity.this, InterventoActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("alca.asset.interventoId", id);
+                b.putSerializable("info", info);
                 intent.putExtras(b);
                 startActivityForResult(intent, 1);
             }

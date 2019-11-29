@@ -14,7 +14,18 @@ public class ManualeFamiglia implements Serializable {
     private String nomeFile;
     private String descr;
     private String shortDescr;
-    private long type;
+    private String ext;
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+    private int tipo;
+
 
     private TypeManuale typeManuale;
 
@@ -58,13 +69,6 @@ public class ManualeFamiglia implements Serializable {
         this.shortDescr = shortDescr;
     }
 
-    public long getType() {
-        return type;
-    }
-
-    public void setType(long type) {
-        this.type = type;
-    }
 
     public TypeManuale getTypeManuale() {
         return typeManuale;
@@ -72,7 +76,7 @@ public class ManualeFamiglia implements Serializable {
 
     public void setTypeManuale(TypeManuale typeManuale) {
         this.typeManuale = typeManuale;
-        this.type=typeManuale.getId();
+        this.tipo = typeManuale.getId();
     }
 
 }

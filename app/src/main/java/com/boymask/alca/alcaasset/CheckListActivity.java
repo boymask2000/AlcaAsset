@@ -3,8 +3,8 @@ package com.boymask.alca.alcaasset;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
+import com.boymask.alca.alcaasset.common.GlobalInfo;
 import com.boymask.alca.alcaasset.common.Util;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
@@ -27,6 +27,7 @@ public class CheckListActivity extends Activity {
 
     private String rfid;
     private String family;
+    private GlobalInfo info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class CheckListActivity extends Activity {
         if (b != null) {
             rfid = b.getString("assetKey");
             family = b.getString("family");
+            info = (GlobalInfo) b.getSerializable("info");
         }
         recuperaAsset();
 
@@ -110,8 +112,7 @@ Log.d("lll", e.getMessage());
 
             @Override
             public void onSuccess(InterventoRestBean interventoRestBean) {
-                Log.d("hh", "" + interventoRestBean.getId());
-                Log.d("hh", "" + interventoRestBean.getData_pianificata());
+
                 getChecklist(interventoRestBean.getId());
             }
 
@@ -152,6 +153,7 @@ Log.d("lll", e.getMessage());
                 Intent intent = new Intent(CheckListActivity.this, ScrollingActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("ChecklistRestBean", (Serializable) crb);
+                b.putSerializable("info", info);
                 intent.putExtras(b);
                 startActivityForResult(intent, 1);
             }

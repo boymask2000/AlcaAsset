@@ -248,8 +248,10 @@ public class ToDoActivity extends Activity {
                 fam.setText(lista.get(position).getFacSystem());
             } else {
 
-
+if( position % 2 ==0)
                 rowView = inflater.inflate(R.layout.todo_row_layout, null, true);
+else
+    rowView = inflater.inflate(R.layout.todo_row_layout1, null, true);
                 TextView idTitle = (TextView) rowView.findViewById(R.id.id);
                 TextView familyTitle = (TextView) rowView.findViewById(R.id.family);
 

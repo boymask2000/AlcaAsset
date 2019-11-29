@@ -14,6 +14,7 @@ import com.boymask.alca.alcaasset.common.GlobalInfo;
 import com.boymask.alca.alcaasset.common.Preferences;
 import com.boymask.alca.alcaasset.rest.ApiService;
 import com.boymask.alca.alcaasset.rest.RetrofitInstance;
+import com.boymask.alca.alcaasset.rest.beans.Asset;
 import com.boymask.alca.alcaasset.rest.beans.ChecklistRestBean;
 import com.boymask.alca.alcaasset.rest.beans.InterventiRealTimeHelper;
 import com.boymask.alca.alcaasset.rest.beans.InterventoRestBean;
@@ -95,7 +96,7 @@ public class CheckListSafetyActivity extends Activity {
                 }
                 info.setAsset(checklistRestBean.getAsset());
 
-                recuperaIntervento(checklistRestBean);
+                recuperaIntervento(checklistRestBean.getAsset());
             }
 
             @Override
@@ -113,7 +114,7 @@ public class CheckListSafetyActivity extends Activity {
     }
 
 
-    private void recuperaIntervento(final ChecklistRestBean checklistRestBean) {
+    private void recuperaIntervento(final Asset asset) {
         String baseUrl = Preferences.getBaseUrl(this);
         AndroidNetworking.get(baseUrl + "intervento/getnext/{rfid}")
                 .addPathParameter("rfid", rfid)
@@ -129,7 +130,7 @@ public class CheckListSafetyActivity extends Activity {
                         InterventiRealTimeHelper.notificaInizioIntervento(info, interventoRestBean, CheckListSafetyActivity.this);
                         CheckListSafetyActivity.this.interventoRestBean = interventoRestBean;
 
-                        getChecklist(checklistRestBean.getAsset().getFacSystem());
+                        getChecklist(asset.getFacSystem());
                     }
 
                     @Override

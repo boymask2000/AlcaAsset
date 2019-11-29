@@ -12,6 +12,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
+import com.boymask.alca.alcaasset.common.GlobalInfo;
 import com.boymask.alca.alcaasset.common.Preferences;
 import com.boymask.alca.alcaasset.rest.beans.Asset;
 import com.boymask.alca.alcaasset.rest.beans.Famiglia;
@@ -19,6 +20,7 @@ import com.boymask.alca.alcaasset.rest.beans.ManualeFamiglia;
 
 public class ViewSchedaFamigliaActivity extends Activity {
 
+    private GlobalInfo info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +38,9 @@ public class ViewSchedaFamigliaActivity extends Activity {
         Bundle b = getIntent().getExtras();
         String rmpId = null;
         if (b != null)
-            rmpId = b.getString("assetRMPID");
+            info = (GlobalInfo) b.getSerializable("info");
 
+        rmpId = info.getAsset().getRpieIdIndividual();
         getAssetByRMPID(rmpId);
     }
 
@@ -96,9 +99,10 @@ public class ViewSchedaFamigliaActivity extends Activity {
     private void getFilePDF(long famid) {
 
         String baseUrl = Preferences.getBaseUrl(this);
-        String url = baseUrl + "famiglia/getpdfscheda/{famid}";
+        String url = baseUrl + "famiglia/getpdfscheda/{famid}/{assetId}";
         AndroidNetworking.get(url)
                 .addPathParameter("famid", "" + famid)
+                .addPathParameter("assetId", "" + info.getAsset().getId())
                 .setTag(this)
                 .setPriority(Priority.LOW)
                 .build()
@@ -133,8 +137,9 @@ public class ViewSchedaFamigliaActivity extends Activity {
                 Uri.parse(baseUrl),
                 "application/pdf");
 
-        startActivityForResult(intent,4);
+        startActivityForResult(intent, 4);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to

@@ -16,6 +16,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.boymask.alca.alcaasset.common.GlobalInfo;
 import com.boymask.alca.alcaasset.common.Preferences;
 import com.boymask.alca.alcaasset.common.TimeUtil;
 import com.boymask.alca.alcaasset.common.Util;
@@ -42,6 +43,7 @@ public class InterventoActivity extends Activity {
 
     private Button buttonScelta;
     private InterventoRestBean inter;
+    private GlobalInfo info;
 
 
 
@@ -50,11 +52,17 @@ public class InterventoActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intervento);
         buttonScelta = (Button) findViewById(R.id.buttonScelta);
+        TextView  rmpie = (TextView)findViewById(R.id.rmpie);
+        TextView  fam = (TextView)findViewById(R.id.family);
 
         Bundle b = getIntent().getExtras();
         long interventoId = 0;
-        if (b != null)
+        if (b != null) {
             interventoId = b.getLong("alca.asset.interventoId");
+            info = (GlobalInfo) b.getSerializable("info");
+            rmpie.setText(info.getAsset().getRpieIdIndividual());
+            fam.setText(info.getAsset().getFacSystem());
+        }
 
         getInterventi(interventoId);
     }
@@ -122,6 +130,8 @@ public class InterventoActivity extends Activity {
         esci.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                inter.setEsito(0);
+                CheckListSafetyActivity.getInterventoRestBean().setEsito(0);
                 finish();
             }
         });
