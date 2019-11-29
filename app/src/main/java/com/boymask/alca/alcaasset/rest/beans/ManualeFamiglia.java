@@ -10,7 +10,7 @@ public class ManualeFamiglia implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private long id;
-    private long familyId;
+
     private String nomeFile;
     private String descr;
     private String shortDescr;
@@ -37,13 +37,6 @@ public class ManualeFamiglia implements Serializable {
         this.id = id;
     }
 
-    public long getFamilyId() {
-        return familyId;
-    }
-
-    public void setFamilyId(long familyId) {
-        this.familyId = familyId;
-    }
 
     public String getNomeFile() {
         return nomeFile;

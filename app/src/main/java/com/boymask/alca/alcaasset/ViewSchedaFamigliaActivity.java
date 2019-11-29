@@ -37,11 +37,12 @@ public class ViewSchedaFamigliaActivity extends Activity {
 
         Bundle b = getIntent().getExtras();
         String rmpId = null;
-        if (b != null)
+        if (b != null) {
             info = (GlobalInfo) b.getSerializable("info");
 
-        rmpId = info.getAsset().getRpieIdIndividual();
-        getAssetByRMPID(rmpId);
+            rmpId = info.getAsset().getRpieIdIndividual();
+            getAssetByRMPID(rmpId);
+        }
     }
 
     private void getAssetByRMPID(String rmpId) {
@@ -131,7 +132,7 @@ public class ViewSchedaFamigliaActivity extends Activity {
     private void downloadPDF(String filename) {
 
         String baseUrl = Preferences.getBaseUrlNoRest(this) + "resources/ManualiFamiglia/" + filename;
-
+        Log.d("PDF", baseUrl);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(
                 Uri.parse(baseUrl),
