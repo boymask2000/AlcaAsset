@@ -36,17 +36,12 @@ public class CheckListSafetyActivity extends Activity {
     private String rfid;
     private GlobalInfo info;
 
-    public static InterventoRestBean getInterventoRestBean() {
-        return interventoRestBean;
-    }
-
-    private static InterventoRestBean interventoRestBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_list);
-        interventoRestBean = null;
+
 
 
         Bundle b = getIntent().getExtras();
@@ -63,12 +58,7 @@ public class CheckListSafetyActivity extends Activity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (interventoRestBean != null)
-            InterventiRealTimeHelper.notificaFineIntervento(info, interventoRestBean, CheckListSafetyActivity.this);
-    }
+
 
     private void recuperaAsset() {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance(this);
@@ -128,7 +118,8 @@ public class CheckListSafetyActivity extends Activity {
 
 
                         InterventiRealTimeHelper.notificaInizioIntervento(info, interventoRestBean, CheckListSafetyActivity.this);
-                        CheckListSafetyActivity.this.interventoRestBean = interventoRestBean;
+
+                        info.setInterventoRestBean(interventoRestBean);
 
                         getChecklist(asset.getFacSystem());
                     }
@@ -188,7 +179,9 @@ public class CheckListSafetyActivity extends Activity {
             String activityResult = data.getStringExtra("key");
             if (activityResult.equals("SEC")) {
                 Log.d("yy", "m");
-                interventoRestBean.setEsito(10);
+                info.getInterventoRestBean().setEsito(10);
+                InterventiRealTimeHelper.notificaFineIntervento(info, info.getInterventoRestBean(), CheckListSafetyActivity.this);
+
             }
 
             finish();

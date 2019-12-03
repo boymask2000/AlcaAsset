@@ -59,7 +59,7 @@ public class ToDoActivity extends Activity {
         listview = (ListView) findViewById(R.id.list);
 
         Bundle b = getIntent().getExtras();
-        info= (GlobalInfo) b.getSerializable("info");
+        info = (GlobalInfo) b.getSerializable("info");
 
         setButtons();
         setDataintervento();
@@ -126,8 +126,10 @@ public class ToDoActivity extends Activity {
             @Override
             public void onSuccess(List<Asset> as) {
 
+                List<Asset> ll = processList(as);
+
                 final ToDoActivity.CustomList adapter = new ToDoActivity.CustomList(ToDoActivity.this,
-                        as);
+                        ll);
                 listview.setAdapter(adapter);
             }
 
@@ -207,6 +209,23 @@ public class ToDoActivity extends Activity {
         ;
     }
 
+    private List<Asset> processList(List<Asset> lista) {
+        String prevFam = "";
+        List<Asset> ll = new ArrayList<>();
+        for (Asset as : lista) {
+
+            if (!as.getFacSystem().equals(prevFam)) {
+                prevFam = as.getFacSystem();
+                Asset temp = new Asset();
+                temp.setFacSystem(as.getFacSystem());
+                ll.add(temp);
+
+            }
+            ll.add(as);
+        }
+        return ll;
+    }
+
     public class CustomList extends ArrayAdapter<Asset> {
         private final Activity context;
 
@@ -216,23 +235,7 @@ public class ToDoActivity extends Activity {
                           List<Asset> lista) {
             super(context, R.layout.row_layout, lista);
             this.context = context;
-            //   this.lista = lista;
-
-            String prevFam = "";
-            List<Asset> ll = new ArrayList<>();
-            for (Asset as : lista) {
-
-                if (!as.getFacSystem().equals(prevFam)) {
-                    prevFam = as.getFacSystem();
-                    Asset temp = new Asset();
-                    temp.setFacSystem(as.getFacSystem());
-                    ll.add(temp);
-
-                }
-                ll.add(as);
-            }
-            this.lista = ll;
-
+            this.lista = lista;
         }
 
         @Override
@@ -248,10 +251,11 @@ public class ToDoActivity extends Activity {
                 fam.setText(lista.get(position).getFacSystem());
             } else {
 
-if( position % 2 ==0)
-                rowView = inflater.inflate(R.layout.todo_row_layout, null, true);
-else
-    rowView = inflater.inflate(R.layout.todo_row_layout1, null, true);
+                if (position % 2 == 0)
+                    rowView = inflater.inflate(R.layout.todo_row_layout, null, true);
+                else
+                    rowView = inflater.inflate(R.layout.todo_row_layout1, null, true);
+
                 TextView idTitle = (TextView) rowView.findViewById(R.id.id);
                 TextView familyTitle = (TextView) rowView.findViewById(R.id.family);
 

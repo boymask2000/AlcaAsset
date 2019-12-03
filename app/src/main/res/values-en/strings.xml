@@ -20,6 +20,7 @@
     <string name="esci_senza_confermare">Exit without confirming</string>
     <string name="allega_foto">Attach photo</string>
     <string name="insert_commento">Insert note here</string>
-    <string name="interventi_todo">Interventions Todo</string>
+    <string name="interventi_todo">Interventions To do</string>
     <string name="interventi_prev">Previous Interventions</string>
+    <string name="are_you_wearing">Are you wearing</string>
 </resources>

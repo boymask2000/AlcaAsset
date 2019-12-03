@@ -9,14 +9,13 @@
         android:id="@+id/checkbox_yes"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:text="Yes"
-       />
+        android:text="Yes" />
+
     <CheckBox
         android:id="@+id/checkbox_no"
         android:layout_width="100dp"
         android:layout_height="100dp"
-android:text="No"
-     />
+        android:text="No" />
 
 
     <ImageView
@@ -39,6 +38,14 @@ android:text="No"
             android:padding="10dp"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <TextView
+
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:padding="10dp"
+            android:text="@string/are_you_wearing"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/ppe"

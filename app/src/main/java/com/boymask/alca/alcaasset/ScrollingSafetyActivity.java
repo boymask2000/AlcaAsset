@@ -62,7 +62,9 @@ public class ScrollingSafetyActivity extends Activity {
 
         listview = (ListView) findViewById(R.id.list);
         assetDesc = (TextView) findViewById(R.id.assetDesc);
-        rpid = (TextView) findViewById(R.id.rpid);
+        rpid = (TextView) findViewById(R.id.rmpie);
+        TextView fam = (TextView) findViewById(R.id.family);
+        TextView subfam = (TextView) findViewById(R.id.subfamily);
         ok = (Button) findViewById(R.id.ok);
         cancel = (Button) findViewById(R.id.cancel);
 
@@ -74,6 +76,9 @@ public class ScrollingSafetyActivity extends Activity {
         info = (GlobalInfo) b.getSerializable("info");
         rpid.setText(assetKey);
         family = crb.getFamily();
+
+        fam.setText(info.getAsset().getFacSystem());
+        subfam.setText(info.getAsset().getFacSubsystem());
         next(crb.getLista());
 
 

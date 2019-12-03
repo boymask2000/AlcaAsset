@@ -19,6 +19,7 @@
     <string name="esci_senza_confermare">Exit without confirming</string>
     <string name="allega_foto">Attach photo</string>
     <string name="insert_commento">Inserire commento</string>
-    <string name="interventi_todo">Interventi Todo</string>
+    <string name="interventi_todo">Interventi To do</string>
     <string name="interventi_prev">Interventi Precedenti</string>
+    <string name="are_you_wearing">Are you wearing</string>
 </resources>
