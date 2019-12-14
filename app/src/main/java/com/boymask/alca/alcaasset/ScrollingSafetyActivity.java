@@ -39,15 +39,15 @@ import java.util.Map;
 import java.util.Set;
 
 public class ScrollingSafetyActivity extends Activity {
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+//    private RecyclerView recyclerView;
+//    private RecyclerView.Adapter mAdapter;
+//    private RecyclerView.LayoutManager layoutManager;
 
     private Map<Integer, Boolean> checkMap = new HashMap<>();
     private Button ok;
     private Button cancel;
     private ListView listview;
-    private TextView assetDesc;
+
     private TextView rpid;
     private String assetKey;
     private String family;
@@ -61,7 +61,7 @@ public class ScrollingSafetyActivity extends Activity {
         setContentView(R.layout.activity_safety_scrolling);
 
         listview = (ListView) findViewById(R.id.list);
-        assetDesc = (TextView) findViewById(R.id.assetDesc);
+
         rpid = (TextView) findViewById(R.id.rmpie);
         TextView fam = (TextView) findViewById(R.id.family);
         TextView subfam = (TextView) findViewById(R.id.subfamily);
@@ -78,7 +78,7 @@ public class ScrollingSafetyActivity extends Activity {
         family = crb.getFamily();
 
         fam.setText(info.getAsset().getFacSystem());
-        subfam.setText(info.getAsset().getFacSubsystem());
+    //    subfam.setText(info.getAsset().getFacSubsystem());
         next(crb.getLista());
 
 
@@ -142,6 +142,7 @@ public class ScrollingSafetyActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ScrollingSafetyActivity.this, ViewSchedaFamigliaActivity.class);
+
                 Bundle b = new Bundle();
                 b.putSerializable("info", info);
                 intent.putExtras(b);
@@ -162,7 +163,12 @@ public class ScrollingSafetyActivity extends Activity {
         if (compTxt.length() > 0)
             msgText += ": " + compTxt;
 
-        msg.setText(msgText);
+        String ms = "CANCEL_ON_SECUR_CKLIST|"+assetKey+"|"+compTxt;
+
+        msg.setMsgCode("CANCEL_ON_SECUR_CKLIST");
+//        msg.addParameter(assetKey);
+//        msg.addParameter(compTxt);
+        msg.setText(ms);
 
 
         notifyCancelInServer(msg);

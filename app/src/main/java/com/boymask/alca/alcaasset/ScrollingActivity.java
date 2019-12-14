@@ -32,15 +32,19 @@ import java.util.Map;
 import java.util.Set;
 
 public class ScrollingActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+//    private RecyclerView recyclerView;
+//    private RecyclerView.Adapter mAdapter;
+//    private RecyclerView.LayoutManager layoutManager;
 
     private Map<Integer, Boolean> checkMap = new HashMap<>();
     private Button ok;
     //   private Button viewPdf;
     private ListView listview;
-    private TextView assetDesc;
+
+    private TextView family;
+    private TextView subfamily;
+    private TextView rmpiecod;
+
     private String language;
     private String rmpId;
     private GlobalInfo info;
@@ -54,18 +58,25 @@ public class ScrollingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scrolling);
 
         listview = (ListView) findViewById(R.id.list);
-        assetDesc = (TextView) findViewById(R.id.assetDesc);
+
+        family = (TextView) findViewById(R.id.family);
+        subfamily = (TextView) findViewById(R.id.subfamily);
+        rmpiecod = (TextView) findViewById(R.id.rmpiecod);
+
         ok = (Button) findViewById(R.id.button);
         //  viewPdf = (Button) findViewById(R.id.viewpdf);
 
         Bundle b = getIntent().getExtras();
-        List<ChecklistIntervento> lista = null;
-        InterventoRestBean irb = null;
+//        List<ChecklistIntervento> lista = null;
+//        InterventoRestBean irb = null;
         ChecklistRestBean crb = (ChecklistRestBean) b.getSerializable("ChecklistRestBean");
         info = (GlobalInfo) b.getSerializable("info");
 
         rmpId = crb.getAssetId();
-        assetDesc.setText(rmpId);
+        rmpiecod.setText(rmpId);
+        family.setText(info.getAsset().getFacSystem());
+    //    subfamily.setText(info.getAsset().getFacSubsystem());
+
         next(crb.getLista(), crb.getInterventoId());
 
 
@@ -150,6 +161,7 @@ public class ScrollingActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             finish();
         }

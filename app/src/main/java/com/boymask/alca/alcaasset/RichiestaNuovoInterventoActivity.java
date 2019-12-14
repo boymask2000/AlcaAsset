@@ -1,7 +1,9 @@
 package com.boymask.alca.alcaasset;
 
 import android.app.DatePickerDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +44,7 @@ public class RichiestaNuovoInterventoActivity extends AppCompatActivity {
 
         final EditText data = (EditText) findViewById(R.id.dataintervento);
         setOk(ok, irb, data);
+        setCancel(cancel);
         final Calendar myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -76,7 +79,18 @@ public class RichiestaNuovoInterventoActivity extends AppCompatActivity {
 
     }
 
+    private void setCancel(Button cancel) {
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
     private void setOk(Button ok, final InterventoRestBean irb, final EditText data) {
+
+
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

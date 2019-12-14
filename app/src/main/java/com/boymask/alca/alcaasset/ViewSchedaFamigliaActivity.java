@@ -132,7 +132,7 @@ public class ViewSchedaFamigliaActivity extends Activity {
     private void downloadPDF(String filename) {
 
         String baseUrl = Preferences.getBaseUrlNoRest(this) + "resources/ManualiFamiglia/" + filename;
-        Log.d("PDF", baseUrl);
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(
                 Uri.parse(baseUrl),

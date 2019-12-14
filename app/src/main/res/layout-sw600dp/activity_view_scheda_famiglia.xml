@@ -4,15 +4,11 @@
     android:background="#ffffff"
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <TextView
+    <FrameLayout
+        android:id="@+id/pdf"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="View PDF"
-        android:textColor="#ffffff"
-        android:id="@+id/tv_header"
-        android:textSize="18dp"
-        android:gravity="center"></TextView>
+        android:layout_height="match_parent">
+    </FrameLayout>
 
     <Button
         android:id="@+id/close"
